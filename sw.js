@@ -1,5 +1,5 @@
-const CACHE="vibetube-shell-v7.5";
-const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./manifest.webmanifest","./icon.svg"];
+const CACHE="vibetube-shell-v8.0";
+const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./ride-ui-patch.css","./ride-ui-patch.js","./manifest.webmanifest","./icon.svg"];
 
 self.addEventListener("install",e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
@@ -12,7 +12,6 @@ self.addEventListener("activate",e=>{
 self.addEventListener("fetch",e=>{
   const u=new URL(e.request.url);
   if(u.origin!==location.origin)return;
-  // HTML/JS/CSS must be network-first so a new deployment appears immediately.
   if(e.request.method==="GET"){
     e.respondWith(
       fetch(e.request,{cache:"no-store"}).then(r=>{
