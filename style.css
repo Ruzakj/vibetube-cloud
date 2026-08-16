@@ -1,0 +1,908 @@
+*{box-sizing:border-box}html,body{margin:0;background:#09090c;color:#f6f6f7;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}body{min-height:100vh;padding-bottom:88px}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:10;background:rgba(9,9,12,.92);backdrop-filter:blur(18px);border-bottom:1px solid #1d1d23}.brand span{display:block;font-size:21px;font-weight:800}.brand small{display:block;color:#777783;font-size:10px;margin-top:2px}.icon-btn,.ghost{border:0;background:#15151b;color:#ddd;border-radius:12px;padding:10px 13px;font-size:18px}.view{display:none;padding:20px 16px}.view.active{display:block}.hero{padding:24px 2px 16px}.eyebrow{font-size:10px;letter-spacing:1.6px;color:#858590;font-weight:800}.hero h1,.page-head h1{font-size:31px;margin:7px 0}.muted{color:#888894;line-height:1.5}.search{display:flex;gap:8px;margin:10px 0 18px}.search input,.card input,.card select{width:100%;background:#15151a;border:1px solid #27272f;color:#fff;border-radius:13px;padding:13px 14px;outline:none}.search button,.primary{border:0;border-radius:13px;background:#eee;color:#09090c;font-weight:800;padding:0 17px}.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:15px}.chip{white-space:nowrap;border:1px solid #292930;background:#121217;color:#bbb;border-radius:999px;padding:9px 13px}.chip.active{background:#eee;color:#08080a;border-color:#eee}.section-head{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px}.section-head h2{font-size:18px}.song-list{display:grid;gap:7px}.song{width:100%;display:grid;grid-template-columns:62px minmax(0,1fr) 34px;gap:14px;align-items:center;padding:10px 9px;border:1px solid transparent;border-radius:16px;background:transparent;color:#fff;text-align:left}.song:hover,.song.current{background:#131318;border-color:#24242c}.thumb{width:62px;height:62px;border-radius:12px;object-fit:cover;background:#18181e}.song-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;padding:1px 0}.song-title{font-size:15px;font-weight:750;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:5px}.song-artist{font-size:13px;color:#85858f;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.song-action{justify-self:end;color:#cfcfd5;font-size:14px}.playlist-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}.playlist-card{width:100%;display:grid;grid-template-columns:44px 1fr 22px;gap:12px;align-items:center;border:1px solid #24242c;background:linear-gradient(135deg,#15151b,#101015);border-radius:18px;padding:15px;text-align:left;color:white;min-height:82px}.playlist-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#22222a;font-size:21px}.playlist-copy{min-width:0}.playlist-copy b{display:block;font-size:15px;margin-bottom:7px}.playlist-copy small{display:block;color:#777783;line-height:1.35}.playlist-arrow{font-size:27px;color:#777}.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:76px;background:rgba(12,12,15,.96);border-top:1px solid #202027;display:flex;z-index:30;backdrop-filter:blur(16px)}.nav{flex:1;background:transparent;border:0;color:#777;font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.nav span{font-size:10px}.nav.active{color:#fff}.player-dock{position:fixed;bottom:76px;left:10px;right:10px;z-index:25;background:#17171d;border:1px solid #292930;border-radius:15px;padding:8px;display:flex;align-items:center;gap:7px;box-shadow:0 12px 30px #0008}.now-mini{flex:1;min-width:0;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.player-btn{border:0;background:transparent;color:#fff;font-size:18px;padding:8px}.player-btn.play{font-size:20px}.player-dock.hidden,.full-player.hidden,.hidden{display:none!important}.full-player{position:fixed;inset:0;background:#09090c;z-index:40;padding:22px 18px 100px;overflow:auto}.close{position:absolute;right:16px;top:14px;background:#17171d;color:#fff;border:0;border-radius:50%;width:38px;height:38px;font-size:25px;z-index:3}.visual{width:min(68vw,290px);aspect-ratio:1;margin:55px auto 22px;border-radius:50%;overflow:hidden;background:#111;box-shadow:0 20px 60px #000;position:relative;border:10px solid #15151b}.music-visual img{width:100%;height:100%;object-fit:cover;border-radius:50%;animation:spin 9s linear infinite;animation-play-state:paused}.music-visual:after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px #ffffff12}.disc-hole{position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);border-radius:50%;background:#09090c;border:4px solid #aaa8;z-index:2}.video-visual{width:min(100%,760px);aspect-ratio:16/9;margin:55px auto 22px;background:#000;border-radius:18px;overflow:hidden;box-shadow:0 20px 60px #000}.yt-player{width:100%;height:100%}.player-meta{max-width:760px;margin:auto}.player-meta h2{font-size:21px;margin:5px 0 5px;line-height:1.3}.player-meta p{color:#888;margin:0}.time-row{max-width:760px;margin:22px auto 6px;display:flex;justify-content:space-between;color:#888;font-size:11px}.seekbar{display:block;width:100%;max-width:760px;margin:0 auto;accent-color:#fff}.controls{display:flex;justify-content:center;gap:28px;align-items:center;margin-top:18px}.controls button{background:transparent;color:#fff;border:0;font-size:24px}.bigplay{width:60px;height:60px;border-radius:50%!important;background:#eee!important;color:#09090c!important}.mode-row{display:flex;justify-content:center;gap:8px;margin:20px 0}.mode-btn{border:1px solid #292930;background:#15151b;color:#aaa;border-radius:999px;padding:10px 15px;font-weight:700}.mode-btn.active{background:#eee;color:#09090c;border-color:#eee}.card{background:#111116;border:1px solid #22222a;border-radius:18px;padding:16px;margin-bottom:12px}.card h3{margin-top:0}.card label{display:block;font-size:12px;color:#888;margin:12px 0}.card label input{margin-top:7px}.switchrow{display:flex!important;justify-content:space-between;align-items:center}.status{font-size:12px;color:#7f7f8b}@keyframes spin{to{transform:rotate(360deg)}}@media(min-width:700px){main{max-width:760px;margin:auto}.bottom-nav{left:50%;right:auto;width:500px;transform:translateX(-50%);border-radius:18px 18px 0 0}.player-dock{max-width:740px;margin:auto;left:calc(50% - 370px);right:calc(50% - 370px)}}
+
+.catalog-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.catalog-actions .primary{padding:11px 14px}.catalog-card{margin-top:12px}
+
+
+/* v6 Smart Mix + live cloud statistics */
+.setting-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.setting-title-row h3{margin-top:0;margin-bottom:6px}
+.small-btn{padding:8px 12px;min-height:36px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.stat-box{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:14px 10px;text-align:center}
+.stat-value{display:block;font-size:1.45rem;font-weight:800;line-height:1.1;letter-spacing:-.03em}
+.stat-label{display:block;margin-top:6px;font-size:.76rem;color:var(--muted)}
+.catalog-stats-list{display:flex;flex-direction:column;gap:7px;margin:8px 0 12px}
+.catalog-stat-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055)}
+.catalog-stat-row>div:first-child{min-width:0}
+.catalog-stat-row b{display:block;font-size:.9rem}
+.catalog-stat-row span{display:block;color:var(--muted);font-size:.72rem;margin-top:3px}
+.catalog-stat-numbers{text-align:right;flex:0 0 auto}
+.catalog-stat-numbers strong{display:block;font-size:1rem}
+.catalog-stat-numbers span{white-space:nowrap}
+.beta-pill{display:inline-flex;vertical-align:middle;font-size:.58rem;letter-spacing:.08em;font-weight:800;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:3px 6px;margin-left:5px;color:var(--muted)}
+.smart-card{overflow:hidden}
+@media(max-width:420px){
+ .stats-grid{gap:7px}
+ .stat-box{padding:12px 6px}
+ .stat-value{font-size:1.25rem}
+ .catalog-stat-row{padding:10px}
+}
+
+
+/* v6.1 Ric Space */
+.ric-launcher{
+  appearance:none;border:0;background:transparent;color:inherit;padding:0;margin:0;
+  font:inherit;font-weight:inherit;cursor:pointer;border-radius:9px;
+}
+.ric-launcher:active{transform:scale(.97)}
+.ric-space-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:24px}
+.ric-space-head h1{margin:2px 0 5px}
+.ric-back-btn{
+  flex:0 0 42px;width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.055);color:var(--text);font-size:30px;line-height:1;cursor:pointer
+}
+.ric-app-grid{display:flex;flex-direction:column;gap:11px}
+.ric-app-card{
+  width:100%;display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:13px;
+  padding:14px;border-radius:19px;border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.045);color:var(--text);text-align:left;text-decoration:none;cursor:pointer;
+  transition:transform .15s ease,background .15s ease,border-color .15s ease
+}
+.ric-app-card:active{transform:scale(.985)}
+.ric-app-card.current{background:rgba(255,255,255,.065)}
+.ric-app-card.disabled{opacity:.48;cursor:default}
+.ric-app-icon{
+  width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.075);font-size:23px;font-weight:800
+}
+.ric-app-copy{min-width:0}
+.ric-app-copy b{display:block;font-size:1rem;line-height:1.25;margin-bottom:5px}
+.ric-app-copy span{display:block;color:var(--muted);font-size:.78rem;line-height:1.35}
+.ric-app-arrow{font-size:28px;color:var(--muted)}
+.ric-app-badge{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.11);border-radius:999px;padding:5px 8px;color:var(--muted)}
+.ric-space-note{
+  margin-top:20px;padding:16px;border-radius:17px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)
+}
+.ric-space-note b{display:block;margin-bottom:6px}
+.ric-space-note p{margin:0;color:var(--muted);font-size:.82rem;line-height:1.5}
+
+button:disabled{opacity:.55;cursor:wait}
+.chip{cursor:pointer;position:relative;z-index:1;touch-action:manipulation}
+.catalog-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.catalog-actions .primary{min-height:42px}
+
+.search-status{min-height:20px;margin:7px 2px 2px;color:var(--muted);font-size:.78rem;line-height:1.35}
+.search button:disabled{opacity:.6;cursor:wait}
+
+#ricToolBody{padding-bottom:24px}.tool-card{padding:16px;border:1px solid rgba(255,255,255,.07);border-radius:19px;background:rgba(255,255,255,.04);margin-bottom:14px}.tool-card label{display:block;margin:10px 0}.tool-card input,.tool-card textarea{width:100%;box-sizing:border-box;margin-top:6px}.tool-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.tool-hint{color:var(--muted);font-size:.78rem;line-height:1.45}.tool-list{display:flex;flex-direction:column;gap:9px}.tool-row{display:flex;justify-content:space-between;gap:12px;padding:13px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.035)}.tool-row span,.tool-row p{display:block;color:var(--muted);font-size:.76rem}.tool-row p{margin:5px 0 0}.tiny{padding:6px 8px;min-height:30px}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.speed-card{text-align:center}.speed-num{font-size:5.2rem;font-weight:900;letter-spacing:-.07em;line-height:1}.speed-unit{color:var(--muted);margin:3px 0 20px}.compass{width:150px;height:150px;margin:0 auto 18px;border:1px solid rgba(255,255,255,.1);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center}.compass-needle{font-size:42px;transition:transform .2s linear}.gps-meta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.75rem}.life-grid{grid-template-columns:repeat(2,1fr)}.mini-list>div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}.linkbtn{display:inline-flex;text-decoration:none;color:inherit}.np-card{padding:24px;border-radius:20px;background:#111;margin-bottom:12px}.np-card img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px}.np-card p{font-size:.7rem;letter-spacing:.15em;color:var(--muted)}.np-card h2{font-size:1.5rem;margin:8px 0}.np-card span{color:var(--muted);display:block;margin-bottom:30px}.np-card b{font-size:.75rem}@media(min-width:680px){.ric-app-grid{display:grid;grid-template-columns:1fr 1fr}}
+
+/* v6.5 Ride HUD */
+.ride-hud{background:#050506;border:1px solid rgba(255,255,255,.08);border-radius:26px;padding:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.015)}.ride-top{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;font-weight:800;letter-spacing:.12em}.ride-gps{padding:6px 9px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--muted)}.speed-stage{height:310px;position:relative;display:flex;align-items:center;justify-content:center}.speed-ring{width:280px;height:280px;transform:rotate(135deg)}.ring-bg,.ring-live{fill:none;stroke-width:7;stroke-linecap:round;stroke-dasharray:590.6;stroke-dashoffset:147}.ring-bg{stroke:rgba(255,255,255,.08)}.ring-live{stroke:currentColor;stroke-dashoffset:590.6;transition:stroke-dashoffset .35s linear}.speed-core{position:absolute;text-align:center}.hud-speed{font-size:6.8rem;line-height:.85;font-weight:900;letter-spacing:-.08em}.hud-unit{font-size:.72rem;letter-spacing:.28em;color:var(--muted);margin-top:12px}.hud-heading{font-size:.82rem;font-weight:800;margin-top:10px}.nav-panel{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:17px;background:rgba(255,255,255,.035)}.nav-arrow{font-size:30px;text-align:center}.nav-panel b,.nav-panel span{display:block}.nav-panel b{font-size:.85rem;letter-spacing:.08em}.nav-panel span{font-size:.7rem;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hud-map-btn{border:1px solid rgba(255,255,255,.12);background:transparent;color:inherit;border-radius:11px;padding:9px;font-size:.68rem;font-weight:900}.ride-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.ride-stats>div{padding:12px 7px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035)}.ride-stats span,.ride-stats b{display:block}.ride-stats span{font-size:.58rem;color:var(--muted);letter-spacing:.1em}.ride-stats b{font-size:.8rem;margin-top:5px}.ride-accuracy{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.62rem;padding:4px 2px 14px}.ride-start{width:100%;min-height:54px;border:0;border-radius:16px;font-weight:900;letter-spacing:.13em;font-size:.82rem}.ride-start.active{outline:1px solid rgba(255,255,255,.35)}@media(max-width:420px){.speed-stage{height:270px}.speed-ring{width:245px;height:245px}.hud-speed{font-size:5.8rem}.ride-stats{grid-template-columns:repeat(2,1fr)}}@media(orientation:landscape) and (max-height:600px){.ride-hud{display:grid;grid-template-columns:minmax(270px,.8fr) 1.2fr;gap:14px}.ride-top{grid-column:1/-1}.speed-stage{grid-row:2/6;height:260px}.speed-ring{width:240px;height:240px}.hud-speed{font-size:5.6rem}.nav-panel,.ride-stats,.ride-accuracy,.ride-start{grid-column:2}.ride-stats{grid-template-columns:repeat(4,1fr)}}
+
+/* v6.6 Reference Motorcycle Dashboard */
+#ricToolView:has(.dash-shell){padding:0!important;max-width:none!important}
+#ricToolView:has(.dash-shell) .ric-space-head{display:none}
+#ricToolView:has(.dash-shell) #ricToolBody{padding:0}
+.dash-shell{position:relative;display:grid;grid-template-columns:40% 60%;height:min(92vh,760px);min-height:560px;background:#02060b;border:1px solid #4b4f55;border-radius:34px;overflow:hidden;box-shadow:0 20px 70px #000}
+.dash-speed-panel{position:relative;padding:24px 28px 20px;border-right:1px solid rgba(255,255,255,.12);background:radial-gradient(circle at 50% 35%,#09111d 0,#03070d 55%,#010204 100%)}
+.dash-clock{position:absolute;top:22px;left:30px;font-size:1.7rem;z-index:3}
+.analog-speed{height:63%;position:relative;display:flex;align-items:center;justify-content:center}
+.analog-svg{width:100%;height:100%;overflow:visible}.speed-track,.speed-live{fill:none;stroke-width:13;stroke-linecap:round;stroke-dasharray:730 244;transform:rotate(135deg);transform-origin:210px 205px}.speed-track{stroke:#172333}.speed-live{stroke:url(#speedGrad);transition:stroke-dashoffset .2s linear}.speed-tick-labels text{fill:#aeb6c5;font-size:17px;text-anchor:middle}
+.speed-readout{position:absolute;top:43%;left:50%;transform:translate(-50%,-50%);text-align:center}.speed-readout strong{font-size:7.4rem;line-height:.8;letter-spacing:-.07em}.speed-readout span{display:block;color:#aeb6c5;font-size:1.8rem;margin-top:18px}
+.lean-card{position:absolute;left:14%;right:14%;bottom:22%;height:135px;border:1px solid #16243a;border-radius:70px;display:grid;grid-template-columns:1fr 130px 1fr;align-items:center;text-align:center;background:linear-gradient(180deg,rgba(9,19,32,.65),rgba(2,6,10,.88))}
+.lean-card strong{font-size:1.8rem}.lean-card>div:first-child strong{color:#00e69b}.lean-card>div:last-child strong{color:#1482ff}.lean-card span{display:block;color:#aab0bb;font-size:.8rem;margin-top:5px}.bike-lean{position:relative;width:112px;height:112px;margin:auto;border-radius:50%;border:3px solid #0c75ff;border-left-color:#05de95;border-bottom-color:#07101a;display:flex;align-items:center;justify-content:center}.bike-lean>div{font-size:3.1rem;transition:transform .15s}.bike-lean small{position:absolute;bottom:-22px;color:#9ea6b3}.lean-label{position:absolute;bottom:16.5%;left:0;right:0;text-align:center;color:#9da4ae;letter-spacing:.08em}
+.dash-bottom-stats{position:absolute;left:28px;right:28px;bottom:26px;border-top:1px solid #1a2430;padding-top:20px;display:grid;grid-template-columns:repeat(4,1fr)}.dash-bottom-stats>div{text-align:center;border-right:1px solid #18212c}.dash-bottom-stats>div:last-child{border:0}.dash-bottom-stats strong{display:block;font-size:1.45rem}.dash-bottom-stats span{display:block;color:#6e9ddd;font-size:.78rem;margin-top:4px}
+.dash-map-panel{position:relative;overflow:hidden;background:#020813}.ride-map{position:absolute;inset:0;background:#06111f}.ride-map .leaflet-tile{filter:brightness(.33) saturate(.65) hue-rotate(175deg) contrast(1.35)}.ride-map .leaflet-control-attribution{background:rgba(0,0,0,.5);color:#89909b;font-size:9px}.ride-map .leaflet-control-attribution a{color:#86a6cf}.map-vignette{pointer-events:none;position:absolute;inset:0;z-index:500;background:radial-gradient(circle at 55% 55%,transparent 10%,rgba(0,10,25,.12) 55%,rgba(0,0,0,.55) 100%)}
+.route-top{position:absolute;z-index:600;top:20px;left:24px;display:flex;gap:10px;align-items:center;color:#a9b5c7;font-size:.72rem}.route-top span:first-child{border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:6px 9px;background:#07101a}
+.vehicle-wrap{position:absolute;z-index:650;left:50%;top:57%;transform:translate(-50%,-50%);width:105px;height:105px;border-radius:50%;background:radial-gradient(circle,rgba(23,124,255,.28),transparent 70%);display:flex;align-items:center;justify-content:center}.vehicle-arrow{font-size:4.4rem;color:#fff;text-shadow:0 0 20px #1584ff;transform-origin:50% 55%;transition:transform .2s linear}
+.nav-floating{position:absolute;z-index:700;left:11%;right:18%;bottom:7.5%;min-height:122px;border:1px solid #384452;border-radius:26px;background:rgba(3,10,18,.92);display:grid;grid-template-columns:150px 1fr;align-items:center;box-shadow:0 10px 35px rgba(0,0,0,.5)}.turn-icon{font-size:5.4rem;text-align:center;border-right:1px solid #66717d;line-height:1}.nav-floating strong{display:block;font-size:2.4rem}.nav-floating span{display:block;color:#adb5c2;font-size:1.35rem;margin-top:6px}
+.map-actions{position:absolute;z-index:750;right:28px;top:35%;display:flex;flex-direction:column;gap:18px}.map-actions button{width:76px;height:76px;border-radius:50%;border:1px solid #46515d;background:rgba(3,10,18,.86);color:#fff;font-size:1.25rem;box-shadow:0 8px 20px #000}.map-actions button:first-child{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.9rem}.map-actions button:first-child i{font-style:normal;font-size:2rem}.map-actions button.off{opacity:.4}.route-dots{position:absolute;z-index:750;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:14px}.route-dots i{width:12px;height:12px;border-radius:50%;background:#46505c}.route-dots i.active{background:#087cff}
+.dash-menu{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.68);display:flex;align-items:center;justify-content:center;padding:20px}.dash-menu.hidden{display:none}.dash-menu-card{width:min(440px,92vw);padding:20px;border-radius:22px;background:#0b0d12;border:1px solid #2b3038;display:flex;flex-direction:column;gap:9px}.dash-menu-head{display:flex;justify-content:space-between;align-items:center;font-size:1.2rem}.dash-menu-head button{border:0;background:transparent;color:#fff;font-size:1.8rem}
+@media(max-width:850px){.dash-shell{grid-template-columns:43% 57%;height:88vh;min-height:500px}.speed-readout strong{font-size:5.4rem}.speed-readout span{font-size:1.25rem}.lean-card{left:7%;right:7%;grid-template-columns:1fr 90px 1fr}.bike-lean{width:78px;height:78px}.nav-floating{left:5%;right:13%;grid-template-columns:105px 1fr;min-height:100px}.turn-icon{font-size:4rem}.nav-floating strong{font-size:1.8rem}.nav-floating span{font-size:1rem}.map-actions{right:14px}.map-actions button{width:58px;height:58px}}
+@media(orientation:portrait){.dash-shell{grid-template-columns:1fr;height:auto;min-height:1100px;border-radius:24px}.dash-speed-panel{height:570px;border-right:0;border-bottom:1px solid #28303a}.dash-map-panel{height:570px}.analog-speed{height:390px}.lean-card{bottom:105px}.lean-label{bottom:76px}.dash-bottom-stats{bottom:16px;padding-top:11px}.nav-floating{left:6%;right:15%;bottom:8%}}
+
+/* v6.7 Ride Dashboard rebuild */
+:root{--ride-bg:#02060b;--ride-line:#1a2635;--ride-muted:#aab2bf}
+#ricToolView:has(.ride-app){padding:0!important;max-width:none!important}
+#ricToolView:has(.ride-app) .ric-space-head{display:none!important}
+#ricToolView:has(.ride-app) #ricToolBody{padding:0!important}
+.ride-app{width:100%;min-height:100dvh;background:#000;padding:0;box-sizing:border-box}
+.ride-dashboard{width:100%;height:100dvh;display:grid;grid-template-columns:minmax(360px,40%) 1fr;background:#02060b;overflow:hidden}
+.ride-left{position:relative;min-width:0;background:radial-gradient(circle at 50% 31%,#0b1421 0%,#040810 50%,#010204 100%);border-right:1px solid rgba(255,255,255,.11);padding:18px 26px 20px;overflow:hidden}
+.ride-clock{position:absolute;left:30px;top:22px;z-index:5;font-size:clamp(1.5rem,2.4vw,2.15rem);font-weight:500;letter-spacing:.02em}
+.ride-speed-wrap{position:relative;width:100%;height:58%;min-height:350px;display:flex;align-items:center;justify-content:center;padding-top:28px;box-sizing:border-box}
+.ride-speed-svg{width:min(100%,560px);height:100%;max-height:480px;overflow:visible}
+.ride-arc-track,.ride-arc-live{fill:none;stroke-width:13;stroke-linecap:round}
+.ride-arc-track{stroke:#162338}
+.ride-arc-live{stroke:url(#rideArcGrad);filter:url(#rideGlow);transition:stroke-dashoffset .18s linear}
+.ride-ticks line{stroke:#b8c1ce;stroke-width:2;opacity:.75}
+.ride-speed-labels text{fill:#b4bcc8;font-size:19px;text-anchor:middle}
+.ride-speed-number{position:absolute;top:49%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.ride-speed-number strong{display:block;font-size:clamp(6rem,11vw,10.5rem);line-height:.78;letter-spacing:-.07em;font-weight:600}
+.ride-speed-number span{display:block;margin-top:22px;font-size:clamp(1.4rem,2.5vw,2.1rem);color:#b5bdca}
+.ride-lean-card{position:absolute;left:8%;right:8%;bottom:18.8%;height:135px;border:1px solid #17263c;border-radius:70px;background:linear-gradient(180deg,rgba(8,17,29,.72),rgba(2,6,11,.92));display:grid;grid-template-columns:1fr 145px 1fr;align-items:center;text-align:center;z-index:3}
+.lean-side strong{font-size:clamp(1.55rem,3vw,2.25rem)}.lean-side span{display:block;margin-top:5px;color:#aab0ba;font-size:.85rem}.lean-side.left strong{color:#00e5a2}.lean-side.right strong{color:#1683ff}
+.ride-bike-ring{width:118px;height:118px;margin:auto;border-radius:50%;border:4px solid #137fff;border-left-color:#00e8a4;border-bottom-color:#0a1420;display:flex;align-items:center;justify-content:center;position:relative}
+.ride-bike-svg{width:92px;color:#f2f5f8;transform-origin:50% 70%;transition:transform .1s linear;filter:drop-shadow(0 0 7px rgba(255,255,255,.15))}
+.ride-bike-ring small{position:absolute;bottom:-28px;color:#c1c8d2;font-size:.95rem}
+.ride-lean-title{position:absolute;bottom:14.9%;left:0;right:0;text-align:center;color:#a4abb6;font-size:1rem;letter-spacing:.13em}
+.ride-info-row{position:absolute;left:26px;right:26px;bottom:22px;border-top:1px solid #1c2632;padding-top:16px;display:grid;grid-template-columns:repeat(4,1fr)}
+.ride-info-row>div{text-align:center;border-right:1px solid #18212c}.ride-info-row>div:last-child{border:0}
+.ride-info-row strong{display:block;font-size:clamp(1.2rem,2.5vw,1.8rem)}.ride-info-row span{display:block;margin-top:4px;color:#6592cc;font-size:.78rem}
+.ride-right{position:relative;min-width:0;overflow:hidden;background:#07101a}.ride-map{position:absolute;inset:0;z-index:1;background:#07101a}
+.ride-map .leaflet-tile{filter:brightness(.46) saturate(.75) hue-rotate(178deg) contrast(1.25)}
+.ride-map .leaflet-control-attribution{background:rgba(0,0,0,.48)!important;color:#8f98a6!important;font-size:9px!important}.ride-map .leaflet-control-attribution a{color:#91b3df!important}
+.ride-map-shade{position:absolute;inset:0;z-index:400;pointer-events:none;background:radial-gradient(circle at 48% 48%,rgba(0,0,0,0) 20%,rgba(0,7,18,.08) 48%,rgba(0,0,0,.50) 100%)}
+.ride-gps-pill{position:absolute;left:24px;top:22px;z-index:500;display:flex;align-items:center;gap:10px;color:#aeb9c7;font-size:.74rem}
+.ride-gps-pill span:first-child{padding:6px 10px;border:1px solid rgba(255,255,255,.17);background:rgba(4,12,22,.86);border-radius:999px}
+.ride-map-vehicle{position:absolute;left:50%;top:57%;z-index:560;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(24,126,255,.28),rgba(24,126,255,.06) 50%,transparent 70%);display:flex;align-items:center;justify-content:center;pointer-events:none}
+.ride-vehicle-arrow{font-size:5rem;color:#fff;filter:drop-shadow(0 0 14px #1682ff);transform-origin:50% 58%;transition:transform .15s linear}
+.ride-turn-card{position:absolute;left:9%;right:17%;bottom:6.5%;z-index:600;min-height:120px;border:1px solid #3c4653;border-radius:25px;background:rgba(3,10,18,.94);box-shadow:0 14px 38px rgba(0,0,0,.45);display:grid;grid-template-columns:145px 1fr;align-items:center}
+.ride-turn-icon{font-size:5.2rem;text-align:center;border-right:1px solid #69737f;line-height:1}.ride-turn-copy{padding:0 25px}.ride-turn-copy strong{display:block;font-size:clamp(2rem,4vw,3rem)}.ride-turn-copy span{display:block;margin-top:6px;color:#afb7c2;font-size:clamp(1rem,2vw,1.45rem)}
+.ride-controls{position:absolute;right:24px;top:32%;z-index:650;display:flex;flex-direction:column;gap:20px}.ride-round-btn{width:78px;height:78px;border-radius:50%;border:1px solid #4a5562;background:rgba(3,10,18,.88);color:#fff;font-size:1.25rem;display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:0 10px 25px rgba(0,0,0,.4)}.ride-round-btn i{font-style:normal;font-size:2rem;line-height:1;transition:transform .15s}.ride-round-btn.off{opacity:.42}
+.ride-round-btn span{font-size:.8rem}.dash-menu{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.68);display:flex;align-items:center;justify-content:center;padding:20px}.dash-menu.hidden{display:none}.dash-menu-card{width:min(440px,92vw);padding:20px;border-radius:22px;background:#0b0d12;border:1px solid #2b3038;display:flex;flex-direction:column;gap:9px}.dash-menu-head{display:flex;justify-content:space-between;align-items:center}.dash-menu-head button{border:0;background:transparent;color:#fff;font-size:1.8rem}
+
+/* full screen: keep dashboard flush */
+#rideDashboard:fullscreen{width:100vw;height:100vh;background:#000}
+#rideDashboard:fullscreen .ride-dashboard{height:100vh}
+
+/* landscape phone/tablet */
+@media (orientation:landscape){
+  .ride-dashboard{grid-template-columns:minmax(320px,40%) 1fr}
+  .ride-left{padding:14px 20px}
+  .ride-clock{top:14px;left:22px}
+  .ride-speed-wrap{height:59%;min-height:0}
+  .ride-lean-card{bottom:19.5%;height:118px;grid-template-columns:1fr 125px 1fr}
+  .ride-bike-ring{width:100px;height:100px}.ride-bike-svg{width:78px}
+  .ride-info-row{left:18px;right:18px;bottom:14px;padding-top:12px}
+  .ride-turn-card{min-height:104px}
+}
+
+/* portrait is intentionally stacked and clean rather than squeezed */
+@media (orientation:portrait){
+  .ride-app{min-height:100dvh}
+  .ride-dashboard{height:auto;min-height:100dvh;display:block;overflow:visible}
+  .ride-left{height:58dvh;min-height:570px;border-right:0;border-bottom:1px solid rgba(255,255,255,.12);padding:18px 22px}
+  .ride-right{height:42dvh;min-height:430px}
+  .ride-speed-wrap{height:62%;min-height:350px;padding-top:22px}
+  .ride-speed-number strong{font-size:7.8rem}
+  .ride-lean-card{left:7%;right:7%;bottom:19%;height:125px;grid-template-columns:1fr 120px 1fr}
+  .ride-bike-ring{width:100px;height:100px}.ride-bike-svg{width:76px}
+  .ride-lean-title{bottom:14.8%}
+  .ride-info-row{left:18px;right:18px;bottom:14px;padding-top:12px}
+  .ride-turn-card{left:5%;right:15%;bottom:6%;min-height:94px;grid-template-columns:105px 1fr}
+  .ride-turn-icon{font-size:4rem}.ride-turn-copy{padding:0 16px}
+  .ride-controls{right:12px;top:26%;gap:14px}.ride-round-btn{width:56px;height:56px;font-size:1rem}.ride-round-btn i{font-size:1.5rem}
+}
+
+/* very short landscape phones */
+@media (orientation:landscape) and (max-height:520px){
+  .ride-dashboard{grid-template-columns:39% 61%}
+  .ride-speed-wrap{height:57%}
+  .ride-speed-number strong{font-size:5.6rem}.ride-speed-number span{font-size:1.2rem;margin-top:12px}
+  .ride-lean-card{bottom:20%;height:92px;grid-template-columns:1fr 92px 1fr}
+  .ride-bike-ring{width:74px;height:74px}.ride-bike-svg{width:58px}.ride-bike-ring small{bottom:-20px}
+  .lean-side strong{font-size:1.35rem}.ride-lean-title{bottom:15.6%;font-size:.78rem}
+  .ride-info-row{bottom:8px;padding-top:8px}.ride-info-row strong{font-size:1rem}.ride-info-row span{font-size:.65rem}
+  .ride-turn-card{bottom:5%;min-height:82px;grid-template-columns:90px 1fr}.ride-turn-icon{font-size:3.3rem}.ride-turn-copy strong{font-size:1.65rem}.ride-turn-copy span{font-size:.9rem}
+  .ride-controls{right:12px;top:28%;gap:10px}.ride-round-btn{width:52px;height:52px}
+}
+
+/* v6.8 exact reference speedometer refinements */
+.ref-speedometer{height:59.5%!important;padding-top:18px!important}
+.ref-speed-svg{width:min(100%,590px)!important;height:100%!important;max-height:520px!important}
+.ref-arc-track,.ref-arc-live{stroke-width:14!important;stroke-linecap:round!important}
+.ref-arc-track{stroke:#18263a!important}
+.ref-arc-live{filter:url(#rideGlow)!important}
+.ref-minor-ticks line{stroke:#8390a2;stroke-width:1.5;opacity:.82}
+.ref-major-ticks line{stroke:#d4dae3!important;stroke-width:2!important;opacity:.9!important}
+.ref-speed-labels text{font-family:Inter,Roboto,"Helvetica Neue",Arial,sans-serif!important;font-size:20px!important;font-weight:400!important;fill:#b6bdc8!important}
+.ref-speed-number{top:49.5%!important}
+.ref-speed-number strong{font-family:Inter,Roboto,"Helvetica Neue",Arial,sans-serif!important;font-weight:500!important;font-size:clamp(7.2rem,12vw,11.5rem)!important;letter-spacing:-.075em!important;line-height:.78!important}
+.ref-speed-number span{font-family:Inter,Roboto,"Helvetica Neue",Arial,sans-serif!important;font-weight:400!important;font-size:clamp(1.55rem,2.8vw,2.25rem)!important;letter-spacing:.015em!important;color:#adb5c1!important;margin-top:22px!important}
+
+.ref-lean-card{left:10%!important;right:10%!important;bottom:18.9%!important;height:142px!important;grid-template-columns:1fr 150px 1fr!important;border-color:#17243a!important;background:linear-gradient(180deg,rgba(7,16,27,.62),rgba(2,5,10,.94))!important}
+.ref-bike-ring{width:122px!important;height:122px!important;border-width:4px!important;border-top-color:#1683ff!important;border-right-color:#1683ff!important;border-left-color:#00e6a0!important;border-bottom-color:#08121e!important}
+.ref-bike-svg{width:96px!important;color:#e7edf5!important;transform-origin:50% 75%!important;transition:transform .11s linear!important}
+.ref-bike-ring small{bottom:-30px!important;font-size:1rem!important}
+.ref-lean-card .lean-side strong{font-family:Inter,Roboto,"Helvetica Neue",Arial,sans-serif!important;font-weight:500!important;font-size:clamp(1.7rem,3.2vw,2.4rem)!important}
+.ref-lean-card .lean-side span{font-size:.86rem!important;letter-spacing:.03em!important}
+
+@media (orientation:landscape) and (max-height:600px){
+  .ref-speedometer{height:58%!important}
+  .ref-speed-number strong{font-size:5.8rem!important}
+  .ref-speed-number span{font-size:1.15rem!important;margin-top:12px!important}
+  .ref-lean-card{height:94px!important;grid-template-columns:1fr 92px 1fr!important;left:7%!important;right:7%!important;bottom:20%!important}
+  .ref-bike-ring{width:76px!important;height:76px!important}.ref-bike-svg{width:58px!important}
+  .ref-bike-ring small{bottom:-20px!important;font-size:.75rem!important}
+  .ref-lean-card .lean-side strong{font-size:1.35rem!important}.ref-lean-card .lean-side span{font-size:.65rem!important}
+}
+
+@media (orientation:portrait){
+  .ref-speedometer{height:61%!important}
+  .ref-speed-number strong{font-size:8.2rem!important}
+  .ref-speed-number span{font-size:1.65rem!important}
+  .ref-lean-card{left:7%!important;right:7%!important;bottom:19%!important;height:126px!important;grid-template-columns:1fr 122px 1fr!important}
+  .ref-bike-ring{width:100px!important;height:100px!important}.ref-bike-svg{width:78px!important}
+}
+
+/* v6.9 Android fullscreen landscape hardening */
+#rideDashboard:fullscreen,
+#rideDashboard.force-landscape-fullscreen{
+  width:100vw!important;
+  height:100vh!important;
+  min-height:0!important;
+  max-height:none!important;
+  display:grid!important;
+  grid-template-columns:40% 60%!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#02060b!important;
+}
+#rideDashboard:fullscreen .ride-left,
+#rideDashboard.force-landscape-fullscreen .ride-left{
+  height:100vh!important;
+  min-height:0!important;
+  border-right:1px solid rgba(255,255,255,.11)!important;
+  border-bottom:0!important;
+  padding:12px 18px 12px!important;
+}
+#rideDashboard:fullscreen .ride-right,
+#rideDashboard.force-landscape-fullscreen .ride-right{
+  height:100vh!important;
+  min-height:0!important;
+}
+#rideDashboard:fullscreen .ride-speed-wrap,
+#rideDashboard.force-landscape-fullscreen .ride-speed-wrap{
+  height:58%!important;
+  min-height:0!important;
+  padding-top:8px!important;
+}
+#rideDashboard:fullscreen .ref-speed-svg,
+#rideDashboard.force-landscape-fullscreen .ref-speed-svg{
+  height:100%!important;
+  max-height:none!important;
+}
+#rideDashboard:fullscreen .ref-speed-number strong,
+#rideDashboard.force-landscape-fullscreen .ref-speed-number strong{font-size:min(15vh,8rem)!important}
+#rideDashboard:fullscreen .ref-speed-number span,
+#rideDashboard.force-landscape-fullscreen .ref-speed-number span{font-size:min(3.4vh,1.55rem)!important;margin-top:8px!important}
+#rideDashboard:fullscreen .ref-lean-card,
+#rideDashboard.force-landscape-fullscreen .ref-lean-card{
+  left:7%!important;right:7%!important;bottom:20%!important;
+  height:18vh!important;min-height:82px!important;max-height:120px!important;
+  grid-template-columns:1fr min(17vh,110px) 1fr!important;
+}
+#rideDashboard:fullscreen .ref-bike-ring,
+#rideDashboard.force-landscape-fullscreen .ref-bike-ring{width:min(15vh,96px)!important;height:min(15vh,96px)!important}
+#rideDashboard:fullscreen .ref-bike-svg,
+#rideDashboard.force-landscape-fullscreen .ref-bike-svg{width:min(12vh,76px)!important}
+#rideDashboard:fullscreen .ride-lean-title,
+#rideDashboard.force-landscape-fullscreen .ride-lean-title{bottom:15.5%!important;font-size:min(2.3vh,.9rem)!important}
+#rideDashboard:fullscreen .ride-info-row,
+#rideDashboard.force-landscape-fullscreen .ride-info-row{left:14px!important;right:14px!important;bottom:7px!important;padding-top:7px!important}
+#rideDashboard:fullscreen .ride-info-row strong,
+#rideDashboard.force-landscape-fullscreen .ride-info-row strong{font-size:min(3.8vh,1.35rem)!important}
+#rideDashboard:fullscreen .ride-info-row span,
+#rideDashboard.force-landscape-fullscreen .ride-info-row span{font-size:min(2vh,.7rem)!important}
+#rideDashboard:fullscreen .ride-clock,
+#rideDashboard.force-landscape-fullscreen .ride-clock{top:10px!important;left:18px!important;font-size:min(4.5vh,1.75rem)!important}
+#rideDashboard:fullscreen .ride-turn-card,
+#rideDashboard.force-landscape-fullscreen .ride-turn-card{left:8%!important;right:15%!important;bottom:5%!important;min-height:15vh!important;max-height:112px!important;grid-template-columns:min(18vh,125px) 1fr!important}
+#rideDashboard:fullscreen .ride-turn-icon,
+#rideDashboard.force-landscape-fullscreen .ride-turn-icon{font-size:min(10vh,4.8rem)!important}
+#rideDashboard:fullscreen .ride-turn-copy strong,
+#rideDashboard.force-landscape-fullscreen .ride-turn-copy strong{font-size:min(6vh,2.5rem)!important}
+#rideDashboard:fullscreen .ride-turn-copy span,
+#rideDashboard.force-landscape-fullscreen .ride-turn-copy span{font-size:min(3.3vh,1.25rem)!important}
+#rideDashboard:fullscreen .ride-controls,
+#rideDashboard.force-landscape-fullscreen .ride-controls{right:14px!important;top:25%!important;gap:min(2.5vh,14px)!important}
+#rideDashboard:fullscreen .ride-round-btn,
+#rideDashboard.force-landscape-fullscreen .ride-round-btn{width:min(10vh,64px)!important;height:min(10vh,64px)!important}
+#rideDashboard:fullscreen .ride-map,
+#rideDashboard.force-landscape-fullscreen .ride-map{width:100%!important;height:100%!important}
+/* Override portrait media rules when Chrome reports portrait viewport during fullscreen rotation. */
+@media (orientation:portrait){
+  #rideDashboard:fullscreen,
+  #rideDashboard.force-landscape-fullscreen{display:grid!important;grid-template-columns:40% 60%!important;height:100vh!important;min-height:0!important}
+  #rideDashboard:fullscreen .ride-left,
+  #rideDashboard.force-landscape-fullscreen .ride-left,
+  #rideDashboard:fullscreen .ride-right,
+  #rideDashboard.force-landscape-fullscreen .ride-right{height:100vh!important;min-height:0!important}
+}
+
+/* v7.0 Android fullscreen hard fix
+   Fullscreen mode is now viewport-fixed on BODY, so both split panels and all absolute children
+   stay rendered even when Chromium changes its reported orientation mid-transition. */
+html.ride-fullscreen-mode,
+body.ride-fullscreen-mode{
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  background:#000!important;
+}
+body.ride-fullscreen-mode #ricToolView{
+  display:block!important;
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483000!important;
+  padding:0!important;
+  margin:0!important;
+  width:100dvw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  background:#000!important;
+  overflow:hidden!important;
+}
+body.ride-fullscreen-mode #ricToolView .ric-space-head{
+  display:none!important;
+}
+body.ride-fullscreen-mode #ricToolBody,
+body.ride-fullscreen-mode .ride-app{
+  display:block!important;
+  width:100dvw!important;
+  height:100dvh!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+body.ride-fullscreen-mode #rideDashboard{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483001!important;
+  display:grid!important;
+  grid-template-columns:40% 60%!important;
+  width:100dvw!important;
+  height:100dvh!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:#000!important;
+}
+body.ride-fullscreen-mode #rideDashboard .ride-left,
+body.ride-fullscreen-mode #rideDashboard .ride-right{
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+body.ride-fullscreen-mode #rideDashboard .ride-left{
+  grid-column:1!important;
+  grid-row:1!important;
+  padding:clamp(8px,2vh,18px) clamp(12px,1.8vw,24px)!important;
+  border-right:1px solid rgba(255,255,255,.12)!important;
+  border-bottom:0!important;
+}
+body.ride-fullscreen-mode #rideDashboard .ride-right{
+  grid-column:2!important;
+  grid-row:1!important;
+  background:#06101b!important;
+  isolation:isolate!important;
+}
+body.ride-fullscreen-mode #rideDashboard .ride-map{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+body.ride-fullscreen-mode #rideDashboard .leaflet-container{
+  width:100%!important;
+  height:100%!important;
+  background:#07101a!important;
+}
+body.ride-fullscreen-mode #rideDashboard .ride-map-shade{display:block!important;z-index:400!important}
+body.ride-fullscreen-mode #rideDashboard .ride-gps-pill{display:flex!important;z-index:800!important}
+body.ride-fullscreen-mode #rideDashboard .ride-map-vehicle{display:flex!important;z-index:820!important}
+body.ride-fullscreen-mode #rideDashboard .ride-turn-card{display:grid!important;z-index:840!important}
+body.ride-fullscreen-mode #rideDashboard .ride-controls{display:flex!important;z-index:860!important}
+
+/* Restore the reference proportions instead of shrinking the left cluster too aggressively. */
+body.ride-fullscreen-mode .ride-clock{
+  top:clamp(12px,3vh,24px)!important;
+  left:clamp(18px,2.5vw,34px)!important;
+  font-size:clamp(1.45rem,3.8vh,2.2rem)!important;
+}
+body.ride-fullscreen-mode .ref-speedometer{
+  position:absolute!important;
+  left:3%!important;
+  right:3%!important;
+  top:6%!important;
+  height:58%!important;
+  min-height:0!important;
+  padding:0!important;
+}
+body.ride-fullscreen-mode .ref-speed-svg{
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+}
+body.ride-fullscreen-mode .ref-speed-number{
+  top:50%!important;
+}
+body.ride-fullscreen-mode .ref-speed-number strong{
+  font-size:clamp(5.6rem,18vh,9.8rem)!important;
+}
+body.ride-fullscreen-mode .ref-speed-number span{
+  font-size:clamp(1.1rem,4vh,2rem)!important;
+  margin-top:clamp(8px,2vh,18px)!important;
+}
+body.ride-fullscreen-mode .ref-lean-card{
+  left:7%!important;
+  right:7%!important;
+  bottom:18.5%!important;
+  height:clamp(90px,18vh,138px)!important;
+  grid-template-columns:1fr clamp(88px,15vh,130px) 1fr!important;
+}
+body.ride-fullscreen-mode .ref-bike-ring{
+  width:clamp(75px,14vh,112px)!important;
+  height:clamp(75px,14vh,112px)!important;
+}
+body.ride-fullscreen-mode .ref-bike-svg{
+  width:78%!important;
+}
+body.ride-fullscreen-mode .ride-lean-title{
+  bottom:14.3%!important;
+  font-size:clamp(.7rem,2.1vh,1rem)!important;
+}
+body.ride-fullscreen-mode .ride-info-row{
+  left:3.5%!important;
+  right:3.5%!important;
+  bottom:2.5%!important;
+  padding-top:clamp(6px,1.6vh,13px)!important;
+}
+body.ride-fullscreen-mode .ride-info-row strong{
+  font-size:clamp(.9rem,3.6vh,1.6rem)!important;
+}
+body.ride-fullscreen-mode .ride-info-row span{
+  font-size:clamp(.58rem,1.8vh,.8rem)!important;
+}
+
+/* Right reference layout */
+body.ride-fullscreen-mode .ride-turn-card{
+  left:9%!important;
+  right:17%!important;
+  bottom:7%!important;
+  min-height:clamp(82px,18vh,122px)!important;
+  grid-template-columns:clamp(86px,16vh,145px) 1fr!important;
+}
+body.ride-fullscreen-mode .ride-turn-icon{
+  font-size:clamp(3rem,11vh,5.2rem)!important;
+}
+body.ride-fullscreen-mode .ride-turn-copy strong{
+  font-size:clamp(1.5rem,6vh,2.8rem)!important;
+}
+body.ride-fullscreen-mode .ride-turn-copy span{
+  font-size:clamp(.8rem,3.2vh,1.35rem)!important;
+}
+body.ride-fullscreen-mode .ride-controls{
+  right:clamp(10px,2vw,28px)!important;
+  top:34%!important;
+  gap:clamp(9px,2.5vh,18px)!important;
+}
+body.ride-fullscreen-mode .ride-round-btn{
+  width:clamp(48px,10vh,76px)!important;
+  height:clamp(48px,10vh,76px)!important;
+}
+
+/* Ignore all portrait stacking rules while ride fullscreen is active. */
+@media (orientation:portrait){
+  body.ride-fullscreen-mode #rideDashboard{
+    display:grid!important;
+    grid-template-columns:40% 60%!important;
+    height:100dvh!important;
+  }
+  body.ride-fullscreen-mode #rideDashboard .ride-left,
+  body.ride-fullscreen-mode #rideDashboard .ride-right{
+    height:100dvh!important;
+  }
+}
+
+/* v7.1 Mapbox navigation */
+.ride-map .mapboxgl-canvas{filter:none!important}
+.ride-map .mapboxgl-ctrl-logo{opacity:.58}
+.ride-map .mapboxgl-ctrl-attrib{background:rgba(0,0,0,.42)!important;color:#9ca7b7!important;font-size:9px}
+.mapbox-user-dot{width:18px;height:18px;border-radius:50%;background:#1684ff;border:3px solid #fff;box-shadow:0 0 0 10px rgba(22,132,255,.16),0 0 20px rgba(22,132,255,.75)}
+.route-choices{position:absolute;z-index:720;top:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;max-width:72%;overflow-x:auto;scrollbar-width:none}
+.route-choices.hidden{display:none}
+.route-choices::-webkit-scrollbar{display:none}
+.route-choices button{flex:0 0 auto;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(5,12,21,.84);backdrop-filter:blur(12px);color:#aeb8c7;padding:8px 12px;display:flex;flex-direction:column;gap:2px;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.route-choices button.active{background:#0b65d8;border-color:#2f91ff;color:#fff}
+.route-choices b{font-size:.68rem;letter-spacing:.08em}.route-choices span{font-size:.78rem;white-space:nowrap}
+body.ride-fullscreen-mode .route-choices{top:2.5vh;max-width:68%}
+
+/* v7.2 real GPS marker + destination search */
+.ride-map-vehicle{display:none!important}
+.mapbox-vehicle-marker{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.mapbox-vehicle-halo{position:absolute;inset:7px;border-radius:50%;background:radial-gradient(circle,rgba(25,132,255,.34),rgba(25,132,255,.12) 48%,transparent 70%);box-shadow:0 0 22px rgba(25,132,255,.55)}
+.mapbox-vehicle-arrow{position:relative;z-index:2;color:#fff;font-size:2.9rem;line-height:1;filter:drop-shadow(0 0 9px #1684ff);transform:translateY(-2px)}
+.ride-map-search{position:absolute;z-index:910;left:24px;right:110px;top:62px;max-width:520px}
+.ride-map-searchbar{display:grid;grid-template-columns:1fr 50px;height:48px;border:1px solid rgba(255,255,255,.18);border-radius:16px;overflow:hidden;background:rgba(4,11,20,.90);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28)}
+.ride-map-searchbar input{width:100%;border:0!important;background:transparent!important;color:#fff!important;padding:0 16px!important;outline:none;font-size:.94rem;min-width:0}
+.ride-map-searchbar input::placeholder{color:#8f9aaa}
+.ride-map-searchbar button{border:0;background:rgba(255,255,255,.06);color:#fff;font-size:1.55rem}
+.ride-map-search-results{margin-top:7px;max-height:290px;overflow:auto;border:1px solid rgba(255,255,255,.13);border-radius:15px;background:rgba(4,10,18,.96);backdrop-filter:blur(16px);box-shadow:0 14px 36px rgba(0,0,0,.46)}
+.ride-map-search-results.hidden{display:none}
+.ride-map-search-results button{display:block;width:100%;padding:11px 14px;border:0;border-bottom:1px solid rgba(255,255,255,.06);background:transparent;color:#fff;text-align:left}
+.ride-map-search-results button:last-child{border-bottom:0}
+.ride-map-search-results button:active{background:rgba(22,132,255,.18)}
+.ride-map-search-results b{display:block;font-size:.88rem}.ride-map-search-results span{display:block;color:#9ba6b5;font-size:.72rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-search-loading{padding:14px;color:#a6b0be;font-size:.8rem}
+#compassBtn.follow-off{border-color:#687585!important;opacity:.72}
+#compassBtn.follow-off::after{content:"FREE";font-size:.46rem;letter-spacing:.08em;color:#aeb8c5}
+body.ride-fullscreen-mode .ride-map-search{top:7.5vh;left:2.5%;right:auto;width:min(46vw,520px);max-width:none}
+@media(orientation:portrait){.ride-map-search{left:12px;right:76px;top:50px}.ride-map-searchbar{height:44px}.ride-map-search-results{max-height:220px}}
+
+/* =========================================================
+   v7.3 UI POLISH ONLY — OEM motorcycle cluster direction
+   No GPS / routing / sensor / search logic changed.
+   ========================================================= */
+#ricToolView:has(.ride-app){background:#000!important}
+.ride-dashboard{
+  --cluster-bg:#020407;
+  --cluster-panel:#05090e;
+  --cluster-line:rgba(151,169,193,.16);
+  --cluster-text:#f4f7fb;
+  --cluster-muted:#7f8b9b;
+  --cluster-blue:#1684ff;
+  --cluster-green:#00d99a;
+  background:var(--cluster-bg)!important;
+  font-family:Inter,Roboto,"Helvetica Neue",Arial,sans-serif!important;
+  color:var(--cluster-text)!important;
+}
+.ride-left{
+  background:
+    radial-gradient(ellipse at 50% 36%,rgba(17,30,48,.54) 0%,rgba(5,10,17,.45) 35%,rgba(1,3,6,.97) 72%),
+    #010306!important;
+  border-right:1px solid rgba(171,188,211,.14)!important;
+}
+.ride-clock{
+  font-variant-numeric:tabular-nums;
+  font-weight:450!important;
+  letter-spacing:-.035em!important;
+  color:#dce3ec!important;
+  opacity:.92;
+}
+.ref-speedometer{top:4.5%!important;height:58.5%!important}
+.ref-speed-svg{max-width:620px!important}
+.ref-arc-track{stroke:#101a29!important;stroke-width:12!important}
+.ref-arc-live{stroke-width:12!important;filter:drop-shadow(0 0 5px rgba(38,117,255,.28))!important}
+.ref-minor-ticks line{stroke:#617083!important;stroke-width:1.25!important;opacity:.6!important}
+.ref-major-ticks line{stroke:#b5c0ce!important;stroke-width:1.6!important;opacity:.82!important}
+.ref-speed-labels text{
+  font-size:18px!important;
+  font-weight:450!important;
+  fill:#8793a3!important;
+  font-variant-numeric:tabular-nums;
+}
+.ref-speed-number{top:50.5%!important}
+.ref-speed-number strong{
+  font-weight:420!important;
+  color:#f7f9fc!important;
+  text-shadow:none!important;
+  font-variant-numeric:tabular-nums;
+}
+.ref-speed-number span{
+  color:#8995a5!important;
+  font-weight:450!important;
+  letter-spacing:-.02em!important;
+}
+.ref-lean-card{
+  left:9%!important;right:9%!important;
+  border:1px solid rgba(92,119,153,.2)!important;
+  background:linear-gradient(180deg,rgba(10,17,27,.74),rgba(3,7,12,.92))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.025)!important;
+}
+.ref-bike-ring{
+  border-width:3px!important;
+  box-shadow:none!important;
+}
+.ref-bike-svg{
+  color:#dbe3ec!important;
+  filter:none!important;
+}
+.ref-lean-card .lean-side strong{font-variant-numeric:tabular-nums;font-weight:520!important}
+.ref-lean-card .lean-side span{
+  color:#6f7b8a!important;
+  letter-spacing:.11em!important;
+  font-weight:600!important;
+}
+.ride-lean-title{
+  color:#657181!important;
+  font-size:.72rem!important;
+  font-weight:600!important;
+  letter-spacing:.18em!important;
+}
+.ride-info-row{
+  border-top:1px solid var(--cluster-line)!important;
+}
+.ride-info-row>div{border-right:1px solid rgba(151,169,193,.11)!important}
+.ride-info-row strong{
+  color:#e9eef5!important;
+  font-weight:520!important;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.025em;
+}
+.ride-info-row span{
+  color:#61738b!important;
+  font-weight:650!important;
+  letter-spacing:.09em!important;
+  font-size:.65rem!important;
+}
+
+/* Map panel — keep map visible, reduce "website" feeling */
+.ride-right{background:#05090f!important}
+.ride-map-shade{
+  background:
+    linear-gradient(90deg,rgba(1,4,8,.2),transparent 18%),
+    linear-gradient(0deg,rgba(1,4,8,.32),transparent 28%),
+    radial-gradient(circle at 52% 47%,transparent 34%,rgba(0,3,8,.20) 100%)!important;
+}
+.ride-gps-pill{
+  top:18px!important;
+  left:20px!important;
+  gap:8px!important;
+  font-size:.64rem!important;
+  letter-spacing:.035em;
+}
+.ride-gps-pill span:first-child{
+  border-color:rgba(138,158,185,.17)!important;
+  background:rgba(3,8,14,.7)!important;
+  color:#9facbd!important;
+  padding:5px 8px!important;
+}
+.ride-gps-pill span:last-child{color:#7f8b99!important}
+
+/* Search becomes a compact instrument control */
+.ride-map-search{
+  top:54px!important;
+  left:20px!important;
+  width:min(420px,54%)!important;
+  right:auto!important;
+}
+.ride-map-searchbar{
+  height:44px!important;
+  border-radius:12px!important;
+  border:1px solid rgba(147,166,191,.18)!important;
+  background:rgba(4,10,17,.82)!important;
+  backdrop-filter:blur(18px)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.24)!important;
+}
+.ride-map-searchbar input{
+  font-size:.82rem!important;
+  font-weight:450!important;
+  padding-left:14px!important;
+}
+.ride-map-searchbar button{
+  background:transparent!important;
+  border-left:1px solid rgba(147,166,191,.11)!important;
+  font-size:1.3rem!important;
+  color:#a9b5c4!important;
+}
+.ride-map-search-results{
+  border-radius:12px!important;
+  border-color:rgba(147,166,191,.15)!important;
+  background:rgba(3,8,14,.96)!important;
+}
+.ride-map-search-results button{padding:10px 12px!important}
+.ride-map-search-results b{font-size:.8rem!important;font-weight:550!important}
+.ride-map-search-results span{font-size:.68rem!important;color:#778494!important}
+
+/* Route options: compact tabs rather than web cards */
+.route-choices{
+  top:18px!important;
+  left:auto!important;
+  right:106px!important;
+  transform:none!important;
+  max-width:50%!important;
+  gap:5px!important;
+}
+.route-choices button{
+  border-radius:9px!important;
+  padding:6px 9px!important;
+  border-color:rgba(143,161,185,.14)!important;
+  background:rgba(3,9,15,.72)!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(12px)!important;
+}
+.route-choices button.active{
+  background:rgba(19,111,221,.88)!important;
+  border-color:rgba(60,147,255,.7)!important;
+}
+.route-choices b{font-size:.55rem!important;letter-spacing:.1em!important}
+.route-choices span{font-size:.67rem!important}
+
+/* Turn instruction: OEM floating cluster */
+.ride-turn-card{
+  left:7%!important;
+  right:15%!important;
+  bottom:5.5%!important;
+  min-height:108px!important;
+  grid-template-columns:118px 1fr!important;
+  border-radius:20px!important;
+  border:1px solid rgba(157,176,201,.25)!important;
+  background:linear-gradient(180deg,rgba(6,13,22,.94),rgba(2,7,12,.96))!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.36),inset 0 1px rgba(255,255,255,.025)!important;
+}
+.ride-turn-icon{
+  font-size:4.35rem!important;
+  color:#f4f8ff!important;
+  border-right:1px solid rgba(158,176,199,.23)!important;
+}
+.ride-turn-copy{padding:0 20px!important}
+.ride-turn-copy strong{
+  font-size:clamp(1.75rem,3.5vw,2.65rem)!important;
+  font-weight:520!important;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.035em!important;
+}
+.ride-turn-copy span{
+  color:#8d99a8!important;
+  font-size:clamp(.85rem,1.55vw,1.15rem)!important;
+  font-weight:450!important;
+}
+
+/* Controls: thinner, consistent, instrument-like */
+.ride-controls{
+  right:20px!important;
+  top:34%!important;
+  gap:14px!important;
+}
+.ride-round-btn{
+  width:62px!important;height:62px!important;
+  border:1px solid rgba(155,175,201,.22)!important;
+  background:rgba(4,10,17,.78)!important;
+  box-shadow:0 7px 20px rgba(0,0,0,.25)!important;
+  backdrop-filter:blur(12px)!important;
+  color:#dce4ee!important;
+}
+.ride-round-btn i{font-size:1.55rem!important}
+.ride-round-btn span{font-size:.66rem!important;color:#9aa7b7!important}
+
+/* GPS marker less cartoonish */
+.mapbox-vehicle-marker{width:52px!important;height:52px!important}
+.mapbox-vehicle-halo{
+  inset:6px!important;
+  background:radial-gradient(circle,rgba(22,132,255,.24),rgba(22,132,255,.06) 55%,transparent 72%)!important;
+  box-shadow:none!important;
+}
+.mapbox-vehicle-arrow{
+  font-size:2.25rem!important;
+  filter:drop-shadow(0 0 5px rgba(22,132,255,.72))!important;
+}
+
+/* Fullscreen landscape is the hero layout */
+body.ride-fullscreen-mode #rideDashboard{grid-template-columns:40% 60%!important}
+body.ride-fullscreen-mode .ride-map-search{
+  top:7.2vh!important;left:2.2%!important;width:min(36vw,420px)!important;
+}
+body.ride-fullscreen-mode .route-choices{
+  top:2.5vh!important;right:10%!important;max-width:46%!important;
+}
+body.ride-fullscreen-mode .ride-turn-card{
+  left:7%!important;right:15%!important;bottom:5.5%!important;
+}
+body.ride-fullscreen-mode .ride-controls{right:2%!important;top:34%!important}
+
+/* Clean portrait fallback */
+@media(orientation:portrait){
+  .ride-left{min-height:600px!important}
+  .ride-right{min-height:470px!important}
+  .ride-map-search{top:50px!important;left:12px!important;width:calc(100% - 86px)!important}
+  .route-choices{top:102px!important;left:12px!important;right:74px!important;max-width:none!important;overflow-x:auto!important}
+  .ride-turn-card{left:4%!important;right:14%!important;bottom:4%!important;min-height:86px!important;grid-template-columns:88px 1fr!important;border-radius:16px!important}
+  .ride-turn-icon{font-size:3.1rem!important}
+  .ride-turn-copy{padding:0 13px!important}
+  .ride-controls{right:10px!important;top:35%!important;gap:10px!important}
+  .ride-round-btn{width:50px!important;height:50px!important}
+}
+
+/* Short Android landscape */
+@media(orientation:landscape) and (max-height:520px){
+  .ride-clock{font-size:1.25rem!important}
+  .ref-speedometer{top:2%!important;height:59%!important}
+  .ref-speed-number strong{font-size:5.5rem!important}
+  .ref-speed-number span{font-size:1rem!important;margin-top:8px!important}
+  .ref-lean-card{bottom:19%!important;height:86px!important}
+  .ride-lean-title{bottom:14.4%!important;font-size:.58rem!important}
+  .ride-info-row{bottom:6px!important;padding-top:7px!important}
+  .ride-turn-card{min-height:76px!important;grid-template-columns:78px 1fr!important;border-radius:15px!important}
+  .ride-turn-icon{font-size:2.9rem!important}
+  .ride-turn-copy strong{font-size:1.5rem!important}
+  .ride-turn-copy span{font-size:.76rem!important}
+  .ride-round-btn{width:48px!important;height:48px!important}
+  .ride-map-searchbar{height:38px!important}
+}
+
+/* v7.4 Dashboard redesign */
+.ride-left{
+  padding:2vh 2vw!important;
+}
+.ref-speedometer{
+  top:1%!important;
+  height:64%!important;
+}
+.ref-speed-svg{
+  transform:scale(1.08)!important;
+}
+.ref-speed-number strong{
+  font-size:clamp(7rem,18vh,12rem)!important;
+  font-weight:380!important;
+}
+.ref-speed-number span{
+  margin-top:8px!important;
+}
+.ref-lean-card{
+  bottom:22%!important;
+  height:120px!important;
+  background:rgba(4,10,17,.75)!important;
+}
+.ref-bike-ring{
+  width:105px!important;
+  height:105px!important;
+}
+.ref-bike-svg{
+  width:85px!important;
+}
+.ride-info-row{
+  bottom:2%!important;
+}
+.ride-right{
+  background:#02050a!important;
+}
+.ride-map-shade{
+  background:
+  linear-gradient(180deg,rgba(0,0,0,.45),transparent 35%),
+  linear-gradient(0deg,rgba(0,0,0,.55),transparent 45%)!important;
+}
+.ride-map-search{
+  transform:scale(.88);
+  transform-origin:left top;
+}
+.ride-turn-card{
+  left:10%!important;
+  right:12%!important;
+  bottom:6%!important;
+  min-height:95px!important;
+  border-radius:24px!important;
+}
+.ride-turn-icon{
+  font-size:3.5rem!important;
+}
+.ride-controls .ride-round-btn{
+  width:56px!important;
+  height:56px!important;
+}
+@media(orientation:landscape) and (max-height:600px){
+  .ref-speedometer{height:62%!important}
+  .ref-speed-number strong{font-size:6.5rem!important}
+  .ref-lean-card{height:95px!important}
+}
+
+/* v7.5 Ride History + Cloud Tracking */
+#rideTrackingBtn.recording{background:#d83d45!important;color:#fff!important;border-color:#ef5a62!important}
+.ride-history-modal{position:fixed;inset:0;z-index:2147483600;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:18px}
+.ride-history-modal.hidden{display:none}
+.ride-history-card{width:min(920px,96vw);height:min(760px,92dvh);overflow:auto;background:#060a10;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;color:#eef3f8}
+.ride-history-head{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 14px}.ride-history-head small{display:block;color:#6f7d8d;font-size:.62rem;letter-spacing:.15em}.ride-history-head b{display:block;font-size:1.35rem;margin-top:3px}.ride-history-head button{border:0;background:transparent;color:#fff;font-size:2rem}
+.ride-history-summary{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:12px}.ride-history-summary>div{text-align:center;padding:13px;border-right:1px solid rgba(255,255,255,.07)}.ride-history-summary>div:last-child{border:0}.ride-history-summary strong{display:block;font-size:1.15rem}.ride-history-summary span{display:block;color:#718094;font-size:.58rem;letter-spacing:.1em;margin-top:4px}
+.ride-history-list{display:flex;flex-direction:column;gap:7px}.ride-history-row{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center;width:100%;border:1px solid rgba(255,255,255,.07);background:#0a1018;color:#fff;border-radius:14px;padding:12px 14px;text-align:left}.ride-history-row b,.ride-history-row strong{display:block}.ride-history-row span{display:block;color:#7d8998;font-size:.7rem;margin-top:4px}.ride-history-row>div:last-child{text-align:right}
+.ride-history-detail{margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}.ride-history-detail.hidden{display:none}#rideHistoryMap{height:310px;border-radius:16px;overflow:hidden;background:#07101a}.ride-history-empty{height:100%;display:flex;align-items:center;justify-content:center;color:#7d8998}.ride-history-detail #rideHistoryMeta{display:flex;justify-content:space-between;gap:12px;padding:10px 4px}.ride-history-detail #rideHistoryMeta span{color:#7d8998;font-size:.72rem}
+@media(max-width:600px){.ride-history-summary{grid-template-columns:repeat(2,1fr)}.ride-history-summary>div:nth-child(2){border-right:0}.ride-history-row{grid-template-columns:1fr}.ride-history-row>div:last-child{text-align:left}.ride-history-card{padding:13px;border-radius:18px}}
