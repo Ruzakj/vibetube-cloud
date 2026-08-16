@@ -1,5 +1,5 @@
-const CACHE="vibetube-shell-v8.7";
-const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./ride-ui-patch.css","./ride-ui-patch.js","./portrait-speedmap-fix.js","./manifest.webmanifest","./icon.svg"];
+const CACHE="vibetube-shell-v8.9";
+const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./ride-ui-patch.css","./ride-ui-patch.js","./portrait-speedmap-fix.js","./ride-autosave.js","./manifest.webmanifest","./icon.svg"];
 
 self.addEventListener("install",e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
