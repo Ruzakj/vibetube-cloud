@@ -1,0 +1,24 @@
+{
+  "name": "PLU Timer",
+  "short_name": "PLU Timer",
+  "id": "/apps/plu-timer/",
+  "description": "Timer PLU offline untuk Android",
+  "start_url": "/apps/plu-timer/",
+  "scope": "/apps/plu-timer/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "fullscreen"
+  ],
+  "background_color": "#f6f7f8",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/apps/plu-timer/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
