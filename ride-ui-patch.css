@@ -1,2 +1,69 @@
-/* Deprecated v7.5.1 inline-search ride styles intentionally disabled.
-   v7.6 ride-ui-v76.css is the only active ride control stylesheet. */
+/* Ride UI v8 — single authoritative override for dashboard controls */
+#rideDashboard.ride-ui-v8 .ride-right{overflow:hidden!important}
+#rideDashboard.ride-ui-v8 .ride-map-search{z-index:820!important;top:54px!important;left:20px!important;right:110px!important;width:min(430px,52%)!important;transform:none!important}
+#rideDashboard.ride-ui-v8 .ride-gps-pill{z-index:810!important;top:16px!important;left:20px!important}
+#rideDashboard.ride-ui-v8 .route-choices{z-index:815!important;top:16px!important;right:108px!important;left:auto!important;transform:none!important}
+
+#rideDashboard.ride-ui-v8 .ride-controls-v8{
+ position:absolute!important;z-index:1500!important;right:18px!important;top:50%!important;transform:translateY(-50%)!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;gap:10px!important;
+ width:58px!important;pointer-events:auto!important;isolation:isolate!important;
+}
+#rideDashboard.ride-ui-v8 .ride-controls-v8>.ride-round-btn{
+ position:relative!important;inset:auto!important;transform:none!important;margin:0!important;padding:0!important;
+ width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;border-radius:50%!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 54px!important;
+ border:1px solid rgba(165,184,208,.28)!important;background:rgba(3,9,16,.92)!important;color:#eef4fb!important;
+ box-shadow:0 8px 22px rgba(0,0,0,.34)!important;backdrop-filter:blur(14px)!important;
+ pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important;overflow:hidden!important;
+}
+#rideDashboard.ride-ui-v8 .ride-controls-v8>.ride-round-btn:active{transform:scale(.94)!important;background:rgba(18,44,74,.96)!important}
+#rideDashboard.ride-ui-v8 .ride-v8-recenter{font-size:0!important}
+#rideDashboard.ride-ui-v8 .ride-v8-recenter span{display:none!important}
+#rideDashboard.ride-ui-v8 .ride-v8-recenter i{font-style:normal!important;font-size:0!important;transform:none!important}
+#rideDashboard.ride-ui-v8 .ride-v8-recenter i:after{content:'◎';font-size:31px!important;line-height:1;color:#f4f8fd}
+#rideDashboard.ride-ui-v8 .ride-v8-voice{font-size:0!important}
+#rideDashboard.ride-ui-v8 .ride-v8-voice:after{content:'◖)))';font-size:17px!important;letter-spacing:-2px}
+#rideDashboard.ride-ui-v8 .ride-v8-track{font-size:0!important;background:rgba(8,16,25,.94)!important}
+#rideDashboard.ride-ui-v8 .ride-v8-track:after{content:'';width:14px;height:14px;border-radius:50%;background:#e8edf4;box-shadow:0 0 0 7px rgba(255,255,255,.04)}
+#rideDashboard.ride-ui-v8 .ride-v8-track.recording{background:rgba(78,9,14,.96)!important;border-color:#d84850!important}
+#rideDashboard.ride-ui-v8 .ride-v8-track.recording:after{width:15px;height:15px;border-radius:3px;background:#ff4d55;box-shadow:0 0 14px rgba(255,61,72,.5)}
+#rideDashboard.ride-ui-v8 .ride-v8-fullscreen{font-size:0!important}
+#rideDashboard.ride-ui-v8 .ride-v8-fullscreen:after{content:'⛶';font-size:25px!important;line-height:1}
+#rideDashboard.ride-ui-v8 .ride-v8-menu{font-size:0!important;letter-spacing:0!important}
+#rideDashboard.ride-ui-v8 .ride-v8-menu:after{content:'•••';font-size:19px!important;letter-spacing:2px!important;transform:translateY(-3px)}
+
+#rideTrackingStatus.ride-tracking-status{position:absolute!important;z-index:1250!important;right:90px!important;bottom:22%!important;padding:9px 14px!important;border-radius:999px!important;background:rgba(5,11,19,.92)!important;border:1px solid rgba(255,82,89,.32)!important;color:#ff5a61!important;font-size:.72rem!important;font-weight:700!important;letter-spacing:.04em!important;pointer-events:none!important;white-space:nowrap!important}
+#rideTrackingStatus.hidden{display:none!important}
+
+/* Menu must be above Mapbox and actually receive taps. */
+.dash-menu.dash-menu-v8{position:fixed!important;inset:0!important;z-index:2147483500!important;background:rgba(0,0,0,.62)!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:18px!important;pointer-events:auto!important}
+.dash-menu.dash-menu-v8.hidden{display:none!important;pointer-events:none!important}
+.dash-menu-v8 .dash-menu-card{position:relative!important;z-index:2!important;width:min(390px,92vw)!important;max-height:88dvh!important;overflow:auto!important;border-radius:20px!important;background:#07101a!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 22px 70px rgba(0,0,0,.62)!important;padding:16px!important;pointer-events:auto!important}
+.dash-menu-v8 #rideTrackingBtn,.dash-menu-v8 #dashFullscreen{display:none!important}
+.dash-menu-v8 .dash-menu-card>button{width:100%!important;min-height:46px!important;margin-top:8px!important;pointer-events:auto!important}
+
+/* Ride History deletion */
+.ride-history-actions{display:flex;justify-content:flex-end;margin:-4px 0 12px}
+#rideDeleteAll{border:1px solid rgba(255,77,85,.38);background:rgba(104,14,20,.24);color:#ff656c;border-radius:11px;padding:9px 12px;font-size:.75rem;font-weight:650}
+.ride-history-row{position:relative!important;padding-right:78px!important;overflow:visible!important}
+.ride-delete-one{position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:4;border:1px solid rgba(255,77,85,.32);background:rgba(92,12,18,.28);color:#ff656c;border-radius:9px;padding:7px 9px;font-size:.68rem;pointer-events:auto;touch-action:manipulation}
+.ride-delete-one:disabled,#rideDeleteAll:disabled{opacity:.45}
+
+/* Compact landscape phones: never let search, route tabs and controls collide. */
+@media (orientation:landscape) and (max-height:620px){
+ #rideDashboard.ride-ui-v8 .ride-controls-v8{right:12px!important;gap:7px!important;width:48px!important}
+ #rideDashboard.ride-ui-v8 .ride-controls-v8>.ride-round-btn{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;flex-basis:46px!important}
+ #rideDashboard.ride-ui-v8 .ride-map-search{left:16px!important;top:48px!important;right:78px!important;width:min(390px,50%)!important}
+ #rideDashboard.ride-ui-v8 .route-choices{right:76px!important;max-width:46%!important}
+ #rideTrackingStatus.ride-tracking-status{right:72px!important;bottom:20%!important}
+}
+@media (orientation:portrait){
+ #rideDashboard.ride-ui-v8 .ride-controls-v8{right:10px!important;top:58%!important;gap:8px!important;width:48px!important}
+ #rideDashboard.ride-ui-v8 .ride-controls-v8>.ride-round-btn{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;flex-basis:46px!important}
+ #rideDashboard.ride-ui-v8 .ride-map-search{left:12px!important;right:70px!important;top:48px!important;width:auto!important}
+ #rideTrackingStatus.ride-tracking-status{right:68px!important;bottom:18%!important}
+ .ride-history-row{padding-right:70px!important}
+}
+body.ride-fullscreen-mode #rideDashboard.ride-ui-v8 .ride-controls-v8{position:absolute!important;right:1.4vw!important;top:50%!important;transform:translateY(-50%)!important}
+body.ride-fullscreen-mode #rideDashboard.ride-ui-v8 .ride-map-search{left:2%!important;top:7vh!important;width:min(38vw,430px)!important;right:auto!important}
