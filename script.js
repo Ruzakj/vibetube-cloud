@@ -352,7 +352,18 @@ function showView(id){
  target.classList.add("active");
  document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.view===id));
  if(id==="settingsView")refreshCatalogStats();
- if(id!=="ricSpaceView")sessionStorage.setItem("vt_last_main_view",id);
+ if(["homeView","playlistView","settingsView"].includes(id))sessionStorage.setItem("vt_last_main_view",id);
+}
+function activeViewId(){return document.querySelector(".view.active")?.id||"homeView"}
+function pushRicSpace(){
+ if(history.state?.vtView!=="ricSpaceView")history.pushState({vtView:"ricSpaceView"},"");
+ showView("ricSpaceView");
+}
+function restoreNavigationState(navState){
+ const id=navState?.vtView;
+ if(id==="ricToolView"&&navState.ricTool){openRicTool(navState.ricTool,true);return}
+ if(["ricSpaceView","homeView","playlistView","settingsView"].includes(id)){showView(id);return}
+ showView(sessionStorage.getItem("vt_last_main_view")||"homeView");
 }
 function setCategory(cat){
  if(!CATEGORIES.some(c=>c.slug===cat))return;
@@ -430,7 +441,7 @@ const RIC={watchId:null};
 function rg(k,d){try{return JSON.parse(localStorage.getItem("ric_"+k))??d}catch(e){return d}} function rs(k,v){localStorage.setItem("ric_"+k,JSON.stringify(v))}
 function rf(l,id,v="",t="text",ph=""){return `<label>${l}<input id="${id}" type="${t}" value="${esc(v)}" placeholder="${esc(ph)}"></label>`}
 function rstat(k,v){let s=rg("stats",{});s[k]=v==null?(s[k]||0)+1:v;rs("stats",s)}
-function openRicTool(n){showView("ricToolView");let m={speedmap:["Speedometer + Arah","GPS speed, kompas & arah"],lifestats:["Life Stats","Statistik lokal Ric Space"],promptlab:["Prompt Lab","Template prompt personal"],nowplaying:["Now Playing Card","Kartu dari track VibeTube aktif"],garage:["Garage","Log motor, servis & biaya"],photospots:["Photo Spot Book","Koleksi spot foto"]};$("#ricToolTitle").textContent=m[n][0];$("#ricToolSubtitle").textContent=m[n][1];let o=rg("opens",{});o[n]=(o[n]||0)+1;rs("opens",o);({speedmap:rSpeed,lifestats:rLife,promptlab:rPrompt,nowplaying:rNP,garage:rGarage,photospots:rSpots}[n])($("#ricToolBody"))}
+function openRicTool(n,fromHistory=false){if(!fromHistory&&!(history.state?.vtView==="ricToolView"&&history.state?.ricTool===n))history.pushState({vtView:"ricToolView",ricTool:n},"");showView("ricToolView");let m={speedmap:["Speedometer + Arah","GPS speed, kompas & arah"],lifestats:["Life Stats","Statistik lokal Ric Space"],promptlab:["Prompt Lab","Template prompt personal"],nowplaying:["Now Playing Card","Kartu dari track VibeTube aktif"],garage:["Garage","Log motor, servis & biaya"],photospots:["Photo Spot Book","Koleksi spot foto"]};$("#ricToolTitle").textContent=m[n][0];$("#ricToolSubtitle").textContent=m[n][1];let o=rg("opens",{});o[n]=(o[n]||0)+1;rs("opens",o);({speedmap:rSpeed,lifestats:rLife,promptlab:rPrompt,nowplaying:rNP,garage:rGarage,photospots:rSpots}[n])($("#ricToolBody"))}
 function rSpeed(b){
  b.innerHTML=`<div class="ride-app">
    <div class="ride-dashboard" id="rideDashboard">
@@ -1172,10 +1183,12 @@ function register(){
  on("#saveCloud","click",()=>{localStorage.setItem("vt_supabase_url",$("#supabaseUrl")?.value.trim()||"");localStorage.setItem("vt_supabase_key",$("#supabaseKey")?.value.trim()||"");setCloudStatus("Cloud config tersimpan. Memuat mix baru…");refreshCatalogStats();generateMix("cloud_config")});
  const urlInput=$("#supabaseUrl"),keyInput=$("#supabaseKey");if(urlInput)urlInput.value=localStorage.getItem("vt_supabase_url")||window.VIBETUBE_CLOUD_URL||"";if(keyInput)keyInput.value=localStorage.getItem("vt_supabase_key")||window.VIBETUBE_CLOUD_KEY||"";
  document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>showView(n.dataset.view));
- on("#ricLauncher","click",()=>showView("ricSpaceView"));
- on("#ricSpaceBack","click",()=>showView(sessionStorage.getItem("vt_last_main_view")||"homeView"));
- on("#ricToolBack","click",()=>showView("ricSpaceView"));
+ on("#ricLauncher","click",pushRicSpace);
+ on("#ricSpaceBack","click",()=>{if(history.state?.vtView==="ricSpaceView")history.back();else showView(sessionStorage.getItem("vt_last_main_view")||"homeView")});
+ on("#ricToolBack","click",()=>{if(history.state?.vtView==="ricToolView")history.back();else showView("ricSpaceView")});
  document.querySelectorAll("[data-tool]").forEach(el=>el.addEventListener("click",()=>openRicTool(el.dataset.tool)));
+ if(!history.state?.vtView)history.replaceState({...history.state,vtView:activeViewId()},"");
+ window.addEventListener("popstate",e=>restoreNavigationState(e.state));
  document.querySelectorAll("[data-view-target]").forEach(el=>el.addEventListener("click",()=>showView(el.dataset.viewTarget)));
  const smart=$("#smartMixMode");if(smart){smart.checked=state.smartMix!==false;smart.onchange=()=>{state.smartMix=smart.checked;localStorage.setItem("vt_smart_mix",smart.checked?"1":"0");updateSmartMixStatus();generateMix("smart_mode_change")}}updateSmartMixStatus();
  on("#refreshStatsBtn","click",refreshCatalogStats);
@@ -1188,7 +1201,7 @@ register();setMode(state.mode);setupMediaSession();setupBackgroundResilience();s
 try{
  const qp=new URLSearchParams(location.search);
  if(qp.get("view")==="ric-space"){
-  history.replaceState(null,"",location.pathname);
+  history.replaceState({vtView:"ricSpaceView"},"",location.pathname);
   showView("ricSpaceView");
  }
 }catch(e){}
