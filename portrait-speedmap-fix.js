@@ -1,0 +1,79 @@
+(()=>{
+  const STYLE_ID='ric-portrait-speedmap-v85-style';
+  if(!document.getElementById(STYLE_ID)){
+    const s=document.createElement('style');
+    s.id=STYLE_ID;
+    s.textContent=`
+@media (orientation:portrait){
+  body.ric-speedmap-portrait{overflow:hidden!important;overscroll-behavior:none!important}
+  body.ric-speedmap-portrait #rideDashboard{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:0!important;max-height:100dvh!important;margin:0!important;padding:0!important;z-index:2147481000!important;overflow:hidden!important;background:#03070d!important;display:block!important}
+  body.ric-speedmap-portrait #rideDashboard .ride-left{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;min-height:0!important;margin:0!important;border:0!important;overflow:hidden!important;padding:max(12px,env(safe-area-inset-top)) 10px max(8px,env(safe-area-inset-bottom))!important;box-sizing:border-box!important;z-index:2!important}
+  body.ric-speedmap-portrait #rideDashboard .ride-right{display:none!important}
+  body.ric-speedmap-portrait .ric-portrait-controls{position:absolute!important;z-index:2147482000!important;top:max(12px,env(safe-area-inset-top))!important;right:max(12px,env(safe-area-inset-right))!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:7px!important;pointer-events:auto!important}
+  body.ric-speedmap-portrait .ric-portrait-controls button{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;border:1px solid rgba(165,184,208,.28)!important;background:rgba(3,9,16,.92)!important;color:#eef4fb!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;line-height:1!important;box-shadow:0 5px 18px rgba(0,0,0,.28)!important;touch-action:manipulation!important;pointer-events:auto!important}
+  body.ric-speedmap-portrait .ric-portrait-controls button:active{transform:scale(.94)!important;background:rgba(18,44,74,.96)!important}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-ride::before{content:'';width:13px;height:13px;border-radius:50%;background:#eef4fb}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-ride.recording::before{border-radius:3px;background:#ff4d55}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-menu{font-size:0!important}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-menu::after{content:'•••';font-size:18px;letter-spacing:2px;transform:translateY(-2px)}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-full{font-size:23px!important}
+  body.ric-speedmap-portrait .ric-portrait-controls .ric-pc-voice{font-size:16px!important;letter-spacing:-2px}
+  body.ric-speedmap-portrait #dashMenu{z-index:2147483000!important}
+  body.ric-speedmap-portrait #rideHistoryModal{z-index:2147483100!important}
+}
+@media (orientation:landscape){.ric-portrait-controls{display:none!important}}
+`;
+    document.head.appendChild(s);
+  }
+
+  const isPortrait=()=>matchMedia('(orientation: portrait)').matches;
+  const q=s=>document.querySelector(s);
+
+  function syncRideVisual(){
+    const source=q('#rideTrackingBtn'),btn=q('.ric-pc-ride');
+    if(!source||!btn)return;
+    btn.classList.toggle('recording',source.classList.contains('recording'));
+    btn.title=source.classList.contains('recording')?'Stop Ride':'Mulai Ride';
+  }
+
+  function ensureMenuBack(){
+    const card=q('#dashMenu .dash-menu-card');
+    if(!card||q('#portraitBackRic'))return;
+    const b=document.createElement('button');
+    b.id='portraitBackRic';b.type='button';b.className='ghost';b.textContent='Kembali ke Ric Space';
+    b.addEventListener('click',()=>{q('#closeDashMenu')?.click();q('#ricToolBack')?.click();cleanup()});
+    card.appendChild(b);
+  }
+
+  function mount(){
+    const dash=q('#rideDashboard');
+    if(!dash)return false;
+    if(!isPortrait()){document.body.classList.remove('ric-speedmap-portrait');return false}
+    document.body.classList.add('ric-speedmap-portrait');
+    dash.classList.add('ric-portrait-fixed');
+    let box=dash.querySelector('.ric-portrait-controls');
+    if(!box){
+      box=document.createElement('div');box.className='ric-portrait-controls';
+      box.innerHTML=`<button type="button" class="ric-pc-voice" aria-label="Voice navigation">◖)))</button><button type="button" class="ric-pc-ride" aria-label="Ride tracking"></button><button type="button" class="ric-pc-full" aria-label="Fullscreen">⛶</button><button type="button" class="ric-pc-menu" aria-label="Menu"></button>`;
+      dash.appendChild(box);
+      box.querySelector('.ric-pc-voice').addEventListener('click',e=>{e.stopPropagation();q('#voiceBtn')?.click()});
+      box.querySelector('.ric-pc-ride').addEventListener('click',e=>{e.stopPropagation();q('#rideTrackingBtn')?.click();setTimeout(syncRideVisual,80)});
+      box.querySelector('.ric-pc-full').addEventListener('click',e=>{e.stopPropagation();q('#dashFullscreen')?.click()});
+      box.querySelector('.ric-pc-menu').addEventListener('click',e=>{e.stopPropagation();const m=q('#dashMenu');if(m){m.classList.remove('hidden');m.style.pointerEvents='auto';ensureMenuBack()}});
+    }
+    ensureMenuBack();syncRideVisual();
+    return true;
+  }
+
+  function cleanup(){document.body.classList.remove('ric-speedmap-portrait')}
+  function scheduleMount(){[0,40,120,260,500].forEach(ms=>setTimeout(mount,ms))}
+
+  document.addEventListener('click',e=>{
+    if(e.target.closest('[data-tool="speedmap"]'))scheduleMount();
+    if(e.target.closest('#ricToolBack'))cleanup();
+  },true);
+  window.addEventListener('orientationchange',scheduleMount,{passive:true});
+  window.addEventListener('resize',()=>{if(q('#rideDashboard'))mount()},{passive:true});
+  setInterval(()=>{if(q('#rideDashboard'))syncRideVisual()},1200);
+  scheduleMount();
+})();
