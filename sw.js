@@ -1,4 +1,4 @@
-const CACHE="vibetube-shell-v8.9";
+const CACHE="vibetube-shell-v9.0";
 const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./ride-ui-patch.css","./ride-ui-patch.js","./portrait-speedmap-fix.js","./ride-autosave.js","./manifest.webmanifest","./icon.svg"];
 
 self.addEventListener("install",e=>{
