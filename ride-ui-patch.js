@@ -3,13 +3,16 @@
     setInterval:window.setInterval.bind(window),
     clearInterval:window.clearInterval.bind(window),
     addEventListener:window.addEventListener.bind(window),
-    removeEventListener:window.removeEventListener.bind(window)
+    removeEventListener:window.removeEventListener.bind(window),
+    docAddEventListener:document.addEventListener.bind(document),
+    docRemoveEventListener:document.removeEventListener.bind(document)
   };
   const runtime=window.__RIC_SPACE_RUNTIME__={
     scope:null,
     speedIntervals:new Set(),
     geoWatches:new Set(),
     orientationListeners:[],
+    globalListeners:[],
     maps:new Set(),
     historyDecorateTimers:new Set(),
     cleaned:true
@@ -19,19 +22,32 @@
   function isSpeedContext(){
     return runtime.scope==='speedmap'||!!document.querySelector('#rideDashboard');
   }
+  function rememberGlobal(target,type,listener,options){
+    if(!runtime.globalListeners.some(x=>x[0]===target&&x[1]===type&&x[2]===listener)){
+      runtime.globalListeners.push([target,type,listener,options]);
+    }
+  }
 
-  // Track only intervals created synchronously while Speedometer is being initialized.
+  // Track intervals created while Speedometer initializes.
   window.setInterval=function(fn,delay,...args){
     const id=native.setInterval(fn,delay,...args);
     if(runtime.scope==='speedmap')runtime.speedIntervals.add(id);
     return id;
   };
 
-  // Track device-orientation handlers added by the speedometer so they can be removed on exit.
+  // Track global Speedometer listeners. They used to survive every reopen and stack up.
   window.addEventListener=function(type,listener,options){
     native.addEventListener(type,listener,options);
     if((type==='deviceorientation'||type==='deviceorientationabsolute')&&isSpeedContext()){
       runtime.orientationListeners.push([type,listener,options]);
+    }else if(runtime.scope==='speedmap'&&(type==='resize'||type==='orientationchange')){
+      rememberGlobal(window,type,listener,options);
+    }
+  };
+  document.addEventListener=function(type,listener,options){
+    native.docAddEventListener(type,listener,options);
+    if(runtime.scope==='speedmap'&&type==='fullscreenchange'){
+      rememberGlobal(document,type,listener,options);
     }
   };
 
@@ -88,6 +104,14 @@
       try{native.removeEventListener(type,listener,options)}catch(e){}
     });
     runtime.orientationListeners=[];
+
+    runtime.globalListeners.forEach(([target,type,listener,options])=>{
+      try{
+        if(target===window)native.removeEventListener(type,listener,options);
+        else native.docRemoveEventListener(type,listener,options);
+      }catch(e){}
+    });
+    runtime.globalListeners=[];
 
     runtime.maps.forEach(m=>{try{m.remove()}catch(e){}});
     runtime.maps.clear();
@@ -210,7 +234,7 @@
     }
   }
 
-  // Replace Ric tool entry with a guarded lifecycle. Any tool exception becomes visible instead of freezing the UI.
+  // Guard every Ric tool load. A tool exception becomes visible instead of freezing the app.
   try{
     const originalOpen=openRicTool;
     openRicTool=function(name){
