@@ -28,14 +28,12 @@
     }
   }
 
-  // Track intervals created while Speedometer initializes.
   window.setInterval=function(fn,delay,...args){
     const id=native.setInterval(fn,delay,...args);
     if(runtime.scope==='speedmap')runtime.speedIntervals.add(id);
     return id;
   };
 
-  // Track global Speedometer listeners. They used to survive every reopen and stack up.
   window.addEventListener=function(type,listener,options){
     native.addEventListener(type,listener,options);
     if((type==='deviceorientation'||type==='deviceorientationabsolute')&&isSpeedContext()){
@@ -51,7 +49,6 @@
     }
   };
 
-  // Track geolocation watchPosition IDs created by Speedometer.
   try{
     const geo=navigator.geolocation;
     if(geo&&typeof geo.watchPosition==='function'&&!geo.__ricWrapped){
@@ -67,7 +64,6 @@
     }
   }catch(e){console.warn('Ric runtime geolocation wrapper:',e)}
 
-  // Track Mapbox instances created by Speedometer and Ride History.
   function installMapboxTracker(){
     try{
       if(!window.mapboxgl?.Map||window.mapboxgl.Map.__ricWrapped)return;
@@ -198,6 +194,9 @@
     runtime.cleaned=false;
     dash.classList.add('ride-ui-v8');controls.classList.add('ride-controls-v8');
 
+    /* Controls must live on the dashboard root, not inside the map panel. Portrait hides map content. */
+    if(controls.parentElement!==dash)dash.appendChild(controls);
+
     compass.classList.add('ride-v8-recenter');compass.title='Recenter / Follow GPS';
     voice.classList.add('ride-v8-voice');voice.title='Voice navigation';
     ride.classList.add('ride-round-btn','ride-v8-track');ride.title='Mulai / Stop Ride';
@@ -223,7 +222,8 @@
     if(history&&!history.dataset.v8Bound){history.dataset.v8Bound='1';history.addEventListener('click',scheduleHistoryDecoration)}
 
     let badge=$('#rideTrackingStatus');
-    if(!badge){badge=document.createElement('div');badge.id='rideTrackingStatus';badge.className='ride-tracking-status hidden';dash.querySelector('.ride-right')?.appendChild(badge)}
+    if(!badge){badge=document.createElement('div');badge.id='rideTrackingStatus';badge.className='ride-tracking-status hidden';dash.appendChild(badge)}
+    else if(badge.parentElement!==dash)dash.appendChild(badge);
     if(!ride.dataset.statusTimer){
       const id=native.setInterval(()=>{
         if(!document.body.contains(ride)){native.clearInterval(id);return}
@@ -234,7 +234,6 @@
     }
   }
 
-  // Guard every Ric tool load. A tool exception becomes visible instead of freezing the app.
   try{
     const originalOpen=openRicTool;
     openRicTool=function(name){
