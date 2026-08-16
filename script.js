@@ -437,7 +437,7 @@ async function doSearch(){
  }
 }
 
-const RIC={watchId:null,digitalKey:null,digitalObjectUrl:null};
+const RIC={watchId:null,digitalKey:null,digitalObjectUrl:null,digitalThumbUrls:[]};
 function rg(k,d){try{return JSON.parse(localStorage.getItem("ric_"+k))??d}catch(e){return d}} function rs(k,v){localStorage.setItem("ric_"+k,JSON.stringify(v))}
 function rf(l,id,v="",t="text",ph=""){return `<label>${l}<input id="${id}" type="${t}" value="${esc(v)}" placeholder="${esc(ph)}"></label>`}
 function rstat(k,v){let s=rg("stats",{});s[k]=v==null?(s[k]||0)+1:v;rs("stats",s)}
@@ -1170,6 +1170,28 @@ async function rdDecrypt(key,row){return crypto.subtle.decrypt({name:"AES-GCM",i
 function rdVault(){try{return JSON.parse(localStorage.getItem(RD_VAULT)||"null")}catch(e){return null}}
 async function rdCheckPin(pin){const vault=rdVault();if(!vault)return null;const key=await rdDerive(pin,rdBytes(vault.salt));const text=new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:rdBytes(vault.iv)},key,rdBytes(vault.check)));if(text!=="RIC-DIGITAL-V1")throw new Error("PIN salah");return key}
 function rdClosePreview(){if(RIC.digitalObjectUrl){URL.revokeObjectURL(RIC.digitalObjectUrl);RIC.digitalObjectUrl=null}}
+function rdClearThumbs(){for(const url of RIC.digitalThumbUrls||[])URL.revokeObjectURL(url);RIC.digitalThumbUrls=[]}
+async function rdMakeThumb(file){
+ if(!file.type.startsWith("image/"))return null;
+ let bitmap=null;
+ try{
+  bitmap=await createImageBitmap(file);
+  const maxW=360,maxH=220,scale=Math.max(maxW/bitmap.width,maxH/bitmap.height),sw=maxW/scale,sh=maxH/scale,sx=(bitmap.width-sw)/2,sy=(bitmap.height-sh)/2;
+  const canvas=document.createElement("canvas");canvas.width=maxW;canvas.height=maxH;
+  canvas.getContext("2d").drawImage(bitmap,sx,sy,sw,sh,0,0,maxW,maxH);
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.78));
+  return blob?await blob.arrayBuffer():null;
+ }catch(e){return null}finally{try{bitmap?.close?.()}catch(e){}}
+}
+async function rdLoadThumb(row,el){
+ if(!el||!row.mime.startsWith("image/"))return;
+ try{
+  const encrypted=row.thumbCipher?{iv:row.thumbIv,cipher:row.thumbCipher}:row;
+  const data=await rdDecrypt(RIC.digitalKey,encrypted),mime=row.thumbCipher?(row.thumbMime||"image/jpeg"):row.mime;
+  const url=URL.createObjectURL(new Blob([data],{type:mime}));RIC.digitalThumbUrls.push(url);
+  const img=document.createElement("img");img.alt="Preview "+(row.label||row.docType);img.loading="lazy";img.src=url;el.replaceChildren(img);
+ }catch(e){el.innerHTML='<span>▣</span>'}
+}
 function rDigital(b){
  const vault=rdVault();
  if(!vault||!RIC.digitalKey){
@@ -1182,9 +1204,9 @@ function rDigital(b){
  }
  b.innerHTML='<div class="tool-card digital-vault-head"><div><h2>Digitalisasi</h2><p class="muted">Brankas terenkripsi · hanya perangkat ini</p></div><button id="rdLock" class="ghost tiny">Kunci</button></div><div class="tool-card"><div class="two-fields"><label>Jenis dokumen<select id="rdType"><option>KTP</option><option>KK</option><option>SIM</option><option>STNK</option><option>Lainnya</option></select></label><label>Nama/catatan<input id="rdLabel" maxlength="60" placeholder="Contoh: KTP Ric"></label></div><label class="digital-file-picker">Pilih foto atau PDF<input id="rdFile" type="file" accept="image/*,application/pdf"></label><button id="rdSave" class="primary">Enkripsi & Simpan</button><p id="rdStatus" class="status"></p></div><div class="digital-section-head"><b>Dokumen tersimpan</b><span id="rdStorage" class="muted"></span></div><div id="rdList" class="tool-list"><p class="muted">Memuat…</p></div><div id="rdPreview" class="digital-preview hidden"><div class="digital-preview-head"><b id="rdPreviewTitle">Dokumen</b><button id="rdPreviewClose">×</button></div><div id="rdPreviewBody"></div></div>';
  const status=$("#rdStatus"),list=$("#rdList");
- async function render(){try{const rows=(await rdAll()).sort((a,z)=>z.createdAt-a.createdAt);list.innerHTML=rows.map(x=>'<div class="tool-row digital-doc-row"><div><b><span class="digital-type">'+esc(x.docType)+'</span> '+esc(x.label||x.docType)+'</b><span>'+new Date(x.createdAt).toLocaleString("id-ID",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})+' · '+(x.size/1048576).toFixed(1)+' MB</span></div><div><button class="ghost tiny" data-rd-view="'+x.id+'">Buka</button><button class="ghost tiny digital-delete" data-rd-del="'+x.id+'">Hapus</button></div></div>').join("")||'<p class="muted">Belum ada dokumen.</p>';if(navigator.storage?.estimate){const q=await navigator.storage.estimate();$("#rdStorage").textContent=q.usage?"Terpakai "+(q.usage/1048576).toFixed(1)+" MB":""}}catch(e){list.innerHTML='<p class="status">Gagal membaca brankas.</p>'}}
- on("#rdLock","click",()=>{rdClosePreview();RIC.digitalKey=null;rDigital(b)});
- on("#rdSave","click",async()=>{const file=$("#rdFile").files?.[0];if(!file){status.textContent="Pilih foto atau PDF.";return}if(file.size>15*1024*1024){status.textContent="Ukuran maksimal 15 MB per file.";return}try{status.textContent="Mengenkripsi dokumen…";const encrypted=await rdEncrypt(RIC.digitalKey,await file.arrayBuffer());await rdPut({id:crypto.randomUUID(),docType:$("#rdType").value,label:$("#rdLabel").value.trim(),mime:file.type||"application/octet-stream",size:file.size,createdAt:Date.now(),iv:encrypted.iv,cipher:encrypted.cipher});$("#rdFile").value="";$("#rdLabel").value="";status.textContent="Dokumen terenkripsi dan tersimpan.";await render()}catch(e){status.textContent="Gagal menyimpan: "+e.message}});
+ async function render(){try{rdClearThumbs();const rows=(await rdAll()).sort((a,z)=>z.createdAt-a.createdAt);list.innerHTML=rows.map(x=>'<div class="tool-row digital-doc-row"><button class="digital-doc-thumb '+(x.mime==="application/pdf"?"is-pdf":"")+'" data-rd-view="'+x.id+'" data-rd-thumb="'+x.id+'" aria-label="Buka preview">'+(x.mime==="application/pdf"?'<span>PDF</span>':'<span>▣</span>')+'</button><div class="digital-doc-copy"><b><span class="digital-type">'+esc(x.docType)+'</span> '+esc(x.label||x.docType)+'</b><span>'+new Date(x.createdAt).toLocaleString("id-ID",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})+' · '+(x.size/1048576).toFixed(1)+' MB</span></div><div class="digital-doc-actions"><button class="ghost tiny" data-rd-view="'+x.id+'">Buka</button><button class="ghost tiny digital-delete" data-rd-del="'+x.id+'">Hapus</button></div></div>').join("")||'<p class="muted">Belum ada dokumen.</p>';for(const row of rows){const el=list.querySelector('[data-rd-thumb="'+CSS.escape(row.id)+'"]');if(el&&row.mime.startsWith("image/"))await rdLoadThumb(row,el)}if(navigator.storage?.estimate){const q=await navigator.storage.estimate();$("#rdStorage").textContent=q.usage?"Terpakai "+(q.usage/1048576).toFixed(1)+" MB":""}}catch(e){list.innerHTML='<p class="status">Gagal membaca brankas.</p>'}}
+ on("#rdLock","click",()=>{rdClosePreview();rdClearThumbs();RIC.digitalKey=null;rDigital(b)});
+ on("#rdSave","click",async()=>{const file=$("#rdFile").files?.[0];if(!file){status.textContent="Pilih foto atau PDF.";return}if(file.size>15*1024*1024){status.textContent="Ukuran maksimal 15 MB per file.";return}try{status.textContent="Membuat preview terenkripsi…";const thumbData=await rdMakeThumb(file),thumb=thumbData?await rdEncrypt(RIC.digitalKey,thumbData):null;status.textContent="Mengenkripsi dokumen…";const encrypted=await rdEncrypt(RIC.digitalKey,await file.arrayBuffer());await rdPut({id:crypto.randomUUID(),docType:$("#rdType").value,label:$("#rdLabel").value.trim(),mime:file.type||"application/octet-stream",size:file.size,createdAt:Date.now(),iv:encrypted.iv,cipher:encrypted.cipher,thumbIv:thumb?.iv||null,thumbCipher:thumb?.cipher||null,thumbMime:thumb?"image/jpeg":null});$("#rdFile").value="";$("#rdLabel").value="";status.textContent="Dokumen terenkripsi dan tersimpan.";await render()}catch(e){status.textContent="Gagal menyimpan: "+e.message}});
  list.onclick=async e=>{const view=e.target.closest("[data-rd-view]"),del=e.target.closest("[data-rd-del]");if(view){const rows=await rdAll(),row=rows.find(x=>x.id===view.dataset.rdView);if(!row)return;try{view.disabled=true;const data=await rdDecrypt(RIC.digitalKey,row);rdClosePreview();const blob=new Blob([data],{type:row.mime}),url=URL.createObjectURL(blob);RIC.digitalObjectUrl=url;$("#rdPreviewTitle").textContent=row.label||row.docType;const body=$("#rdPreviewBody");body.innerHTML=row.mime.startsWith("image/")?'<img alt="Pratinjau dokumen">':'<iframe title="Pratinjau dokumen"></iframe><a class="primary linkbtn digital-open-file" target="_blank" rel="noopener">Buka file</a>';const media=body.querySelector("img,iframe");if(media)media.src=url;const link=body.querySelector("a");if(link)link.href=url;$("#rdPreview").classList.remove("hidden")}catch(err){status.textContent="Gagal membuka dokumen."}finally{view.disabled=false}}if(del){if(!confirm("Hapus dokumen ini secara permanen dari perangkat?"))return;await rdDelete(del.dataset.rdDel);await render()}};
  on("#rdPreviewClose","click",()=>{rdClosePreview();$("#rdPreview").classList.add("hidden");$("#rdPreviewBody").innerHTML=""});
  render();
