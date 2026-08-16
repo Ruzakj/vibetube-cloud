@@ -39,7 +39,7 @@
           if(ok===false)throw new Error('Ride tidak ditemukan');
           row.remove();
           setStatus('Ride history dihapus');
-          $('#rideHistoryBtn')?.click();
+          setTimeout(()=>$('#rideHistoryBtn')?.click(),50);
         }catch(err){del.disabled=false;del.textContent='Hapus';alert('Gagal hapus ride: '+err.message)}
       });
       row.appendChild(del);
@@ -56,19 +56,34 @@
         try{
           const n=await rpc('vt_ride_delete_all',{p_anonymous_key:userKey()});
           setStatus(`${Number(n)||0} ride dihapus`);
-          $('#rideHistoryBtn')?.click();
+          setTimeout(()=>$('#rideHistoryBtn')?.click(),50);
         }catch(err){alert('Gagal hapus histori: '+err.message)}
         finally{btn.disabled=false;btn.textContent='Hapus semua histori'}
       });
     }
   }
 
+  function startStatusTicker(ride,badge){
+    if(statusTimer)clearInterval(statusTimer);
+    statusTimer=setInterval(()=>{
+      if(!document.body.contains(ride)){clearInterval(statusTimer);statusTimer=null;return}
+      const rec=ride.classList.contains('recording');
+      if(rec){
+        badge.classList.remove('hidden');
+        const t=(ride.textContent||'').replace(/^Stop Ride\s*·?\s*/i,'');
+        badge.textContent=`● REC${t?' · '+t:''}`;
+      }else if(!badge.classList.contains('hidden')){
+        badge.classList.add('hidden');
+      }
+    },700);
+  }
+
   function patchDashboard(){
     const dash=$('#rideDashboard'),controls=dash?.querySelector('.ride-controls');
     const compass=$('#compassBtn'),voice=$('#voiceBtn'),ride=$('#rideTrackingBtn'),full=$('#dashFullscreen'),menu=$('#dashMenuBtn');
-    if(!dash||!controls||!compass||!voice||!ride||!full||!menu)return;
-    if(activeDash!==dash){activeDash=dash;dash.classList.add('ride-ui-v8')}
+    if(!dash||!controls||!compass||!voice||!ride||!full||!menu)return false;
 
+    if(activeDash!==dash){activeDash=dash;dash.classList.add('ride-ui-v8')}
     controls.classList.add('ride-controls-v8');
     compass.classList.add('ride-v8-recenter');compass.title='Recenter / Follow GPS';
     voice.classList.add('ride-v8-voice');voice.title='Voice navigation';
@@ -76,33 +91,42 @@
     full.classList.add('ride-round-btn','ride-v8-fullscreen');full.title='Fullscreen';
     menu.classList.add('ride-v8-menu');menu.title='Menu lainnya';
 
-    // One stable owner for the five controls. Moving existing nodes keeps original listeners.
     [compass,voice,ride,full,menu].forEach(el=>{if(el.parentElement!==controls)controls.appendChild(el)});
 
-    // Make menu a dashboard overlay and guarantee it sits above Mapbox.
     const menuOverlay=$('#dashMenu');
     if(menuOverlay){menuOverlay.classList.add('dash-menu-v8');menuOverlay.style.pointerEvents=menuOverlay.classList.contains('hidden')?'none':'auto'}
 
-    // Capture phase prevents Mapbox/canvas overlays from swallowing the three-dot tap.
     if(!menu.dataset.v8Bound){
       menu.dataset.v8Bound='1';
-      menu.addEventListener('pointerup',e=>{e.stopPropagation();const m=$('#dashMenu');if(m){m.classList.remove('hidden');m.style.pointerEvents='auto'}},{capture:true});
+      const openMenu=e=>{e.preventDefault();e.stopPropagation();const m=$('#dashMenu');if(m){m.classList.remove('hidden');m.style.pointerEvents='auto'}};
+      menu.addEventListener('pointerdown',openMenu,{capture:true});
+      menu.addEventListener('click',openMenu,{capture:true});
     }
     const close=$('#closeDashMenu');
-    if(close&&!close.dataset.v8Bound){close.dataset.v8Bound='1';close.addEventListener('click',()=>{const m=$('#dashMenu');if(m){m.classList.add('hidden');m.style.pointerEvents='none'}})}
+    if(close&&!close.dataset.v8Bound){
+      close.dataset.v8Bound='1';
+      close.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const m=$('#dashMenu');if(m){m.classList.add('hidden');m.style.pointerEvents='none'}});
+    }
 
     let badge=$('#rideTrackingStatus');
     if(!badge){badge=document.createElement('div');badge.id='rideTrackingStatus';badge.className='ride-tracking-status hidden';dash.querySelector('.ride-right')?.appendChild(badge)}
-    if(statusTimer)clearInterval(statusTimer);
-    statusTimer=setInterval(()=>{
-      if(!document.body.contains(ride)){clearInterval(statusTimer);return}
-      const rec=ride.classList.contains('recording');badge.classList.toggle('hidden',!rec);
-      if(rec){const t=(ride.textContent||'').replace(/^Stop Ride\s*·?\s*/i,'');badge.textContent=`● REC${t?' · '+t:''}`}
-    },500);
+    startStatusTicker(ride,badge);
+    return true;
   }
 
-  const observer=new MutationObserver(()=>{patchDashboard();decorateHistory()});
-  observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  document.addEventListener('DOMContentLoaded',()=>{patchDashboard();decorateHistory()});
-  patchDashboard();decorateHistory();
+  function patchWhenReady(){
+    [0,60,180,420,900].forEach(ms=>setTimeout(()=>patchDashboard(),ms));
+  }
+  function decorateHistoryWhenReady(){
+    [50,180,450,900,1500].forEach(ms=>setTimeout(decorateHistory,ms));
+  }
+
+  document.addEventListener('DOMContentLoaded',patchWhenReady,{once:true});
+  document.addEventListener('click',e=>{
+    if(e.target.closest('[data-tool="speedmap"]'))patchWhenReady();
+    if(e.target.closest('#rideHistoryBtn'))decorateHistoryWhenReady();
+    if(e.target.closest('#dashMenuBtn'))setTimeout(patchDashboard,0);
+  },true);
+  window.addEventListener('pageshow',()=>{if($('#rideDashboard'))patchWhenReady()});
+  patchWhenReady();
 })();
