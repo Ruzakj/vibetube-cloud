@@ -4,9 +4,3 @@
 window.VIBETUBE_CLOUD_URL = "https://ejgmyxzmjkmqofacrusv.supabase.co";
 window.VIBETUBE_CLOUD_KEY = "sb_publishable_a8b-ZpStv-Oyo-FDVMbstA_WAgRcUbn";
 
-// Reliable portrait Speedometer overlay + controls fallback.
-(()=>{
-  const s=document.createElement('script');
-  s.src='./portrait-speedmap-fix.js?v=8.6.0';
-  document.head.appendChild(s);
-})();
