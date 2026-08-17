@@ -1291,6 +1291,10 @@ function rExpense(b){
  function budgets(){return rg(BUDGET_KEY,{})}
  function setBudget(value){const all=budgets();all[month]=Math.max(0,Number(value)||0);rs(BUDGET_KEY,all)}
  function csvCell(value){let s=String(value??"");if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+ function exB64(bytes){let out="";const u=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);for(let i=0;i<u.length;i+=32768)out+=String.fromCharCode(...u.subarray(i,i+32768));return btoa(out)}
+ function exBytes(value){const raw=atob(value),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+ async function exKey(pin,salt){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:210000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+ function exDownload(name,text){const blob=new Blob([text],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
  b.innerHTML=`<div class="expense-shell">
   <section class="expense-hero">
    <div class="expense-hero-top"><div><p class="expense-eyebrow">MONTHLY CONTROL</p><h2>Financial overview</h2></div><label class="expense-month"><span>BULAN</span><input id="exMonth" type="month" value="${month}"></label></div>
@@ -1304,7 +1308,7 @@ function rExpense(b){
    <button id="exSave" class="primary expense-save">Simpan Transaksi <span>→</span></button><p id="exStatus" class="status"></p>
   </section>
   <section class="tool-card expense-insight-card"><div class="expense-section-title"><div><p class="expense-eyebrow">SPENDING INSIGHT</p><b>Distribusi pengeluaran</b></div><span id="exTopCat">—</span></div><div id="exChart" class="expense-chart"></div></section>
-  <section class="expense-ledger"><div class="expense-section-title"><div><p class="expense-eyebrow">LEDGER</p><b>Riwayat transaksi</b></div><button id="exExport" class="ghost tiny">Export CSV</button></div>
+  <section class="expense-ledger"><div class="expense-section-title"><div><p class="expense-eyebrow">LEDGER</p><b>Riwayat transaksi</b></div><div class="expense-ledger-actions"><button id="exBackup" class="ghost tiny">Backup</button><button id="exRestore" class="ghost tiny">Restore</button><button id="exExport" class="ghost tiny">CSV</button><input id="exRestoreFile" type="file" accept=".ricexpense,.json,application/json" hidden></div></div>
    <div class="expense-filters"><label><span>⌕</span><input id="exSearch" type="search" placeholder="Cari catatan atau kategori"></label><select id="exFilter"><option value="all">Semua</option><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select></div>
    <div id="exList" class="expense-list"></div>
   </section>
@@ -1327,6 +1331,38 @@ function rExpense(b){
  on("#exSave","click",()=>{const amount=Math.floor(Number($("#exAmount").value)||0),date=$("#exDate").value,note=$("#exNote").value.trim();if(amount<=0||amount>999999999999){$("#exStatus").textContent="Nominal tidak valid.";return}if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){ $("#exStatus").textContent="Tanggal wajib diisi.";return}rows.unshift({id:crypto.randomUUID(),type,amount,category:$("#exCategory").value,note:note.slice(0,80),date,createdAt:Date.now()});rows=rows.slice(0,2000);rs(KEY,rows);$("#exAmount").value="";$("#exNote").value="";month=date.slice(0,7);$("#exMonth").value=month;$("#exStatus").textContent="Transaksi tersimpan lokal.";render()});
  on("#exBudgetEdit","click",()=>{const current=Number(budgets()[month]||0),value=prompt("Anggaran untuk "+month+" (rupiah)",current||"");if(value===null)return;const parsed=Number(String(value).replace(/[^0-9]/g,""));if(!Number.isFinite(parsed)){return}setBudget(parsed);render()});
  $("#exList").onclick=e=>{const del=e.target.closest("[data-ex-del]");if(!del||!confirm("Hapus transaksi ini?"))return;rows=rows.filter(x=>x.id!==del.dataset.exDel);rs(KEY,rows);render()};
+ on("#exBackup","click",async()=>{
+  const pin=prompt("Buat PIN backup (6–12 angka)");if(pin===null)return;
+  if(!/^\d{6,12}$/.test(pin)){ $("#exStatus").textContent="PIN harus 6–12 angka.";return}
+  const confirmPin=prompt("Ulangi PIN backup");if(confirmPin!==pin){$("#exStatus").textContent="PIN konfirmasi tidak sama.";return}
+  try{
+   $("#exStatus").textContent="Mengenkripsi backup…";
+   const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),key=await exKey(pin,salt);
+   const payload={version:1,exportedAt:new Date().toISOString(),transactions:safeRows(),budgets:budgets()};
+   const cipher=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(JSON.stringify(payload)));
+   exDownload("ric-expense-backup-"+new Date().toISOString().slice(0,10)+".ricexpense",JSON.stringify({format:"RIC_EXPENSE_BACKUP_V1",kdf:"PBKDF2-SHA256",iterations:210000,salt:exB64(salt),iv:exB64(iv),data:exB64(cipher)}));
+   $("#exStatus").textContent="Backup terenkripsi berhasil dibuat.";
+  }catch(err){$("#exStatus").textContent="Backup gagal: "+err.message}
+ });
+ on("#exRestore","click",()=>$("#exRestoreFile").click());
+ on("#exRestoreFile","change",async e=>{
+  const file=e.target.files?.[0];e.target.value="";if(!file)return;
+  if(file.size>5*1024*1024){$("#exStatus").textContent="File backup terlalu besar.";return}
+  const pin=prompt("Masukkan PIN backup");if(pin===null)return;
+  try{
+   $("#exStatus").textContent="Membuka backup…";
+   const backup=JSON.parse(await file.text());
+   if(backup.format!=="RIC_EXPENSE_BACKUP_V1"||!backup.salt||!backup.iv||!backup.data)throw new Error("format");
+   const key=await exKey(pin,exBytes(backup.salt));
+   const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:exBytes(backup.iv)},key,exBytes(backup.data));
+   const payload=JSON.parse(new TextDecoder().decode(plain));
+   if(payload.version!==1||!Array.isArray(payload.transactions)||!payload.budgets||typeof payload.budgets!=="object")throw new Error("payload");
+   const clean=payload.transactions.slice(0,2000).filter(x=>x&&["expense","income"].includes(x.type)&&Number(x.amount)>0&&/^\d{4}-\d{2}-\d{2}$/.test(String(x.date))).map(x=>({id:String(x.id||crypto.randomUUID()),type:x.type,amount:Math.floor(Number(x.amount)),category:String(x.category||"Lainnya").slice(0,40),note:String(x.note||"").slice(0,80),date:String(x.date),createdAt:Number(x.createdAt)||Date.now()}));
+   const cleanBudgets={};Object.entries(payload.budgets).forEach(([k,v])=>{if(/^\d{4}-\d{2}$/.test(k)&&Number.isFinite(Number(v))&&Number(v)>=0)cleanBudgets[k]=Number(v)});
+   if(!confirm("Restore "+clean.length+" transaksi? Data Expense Tracker saat ini akan diganti.")){ $("#exStatus").textContent="Restore dibatalkan.";return}
+   rows=clean;rs(KEY,rows);rs(BUDGET_KEY,cleanBudgets);month=new Date().toISOString().slice(0,7);$("#exMonth").value=month;render();$("#exStatus").textContent="Backup berhasil dipulihkan.";
+  }catch(err){$("#exStatus").textContent="Restore gagal. PIN salah atau file rusak."}
+ });
  on("#exExport","click",()=>{const data=monthRows();if(!data.length){$("#exStatus").textContent="Belum ada transaksi untuk diekspor.";return}const csv=["Tanggal,Jenis,Kategori,Catatan,Nominal",...data.map(x=>[x.date,x.type,x.category,x.note,x.amount].map(csvCell).join(","))].join("\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="ric-expense-"+month+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 }
 
