@@ -1,15 +1,16 @@
 {
-  "name": "VibeTube Music",
-  "short_name": "VibeTube",
-  "start_url": "./",
+  "name": "Ric Space",
+  "short_name": "Ric Space",
+  "description": "Personal digital hub untuk musik, produktivitas, dokumen, keuangan, perjalanan, dan hiburan.",
+  "start_url": "./?view=ric-space",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "theme_color": "#09090c",
-  "background_color": "#09090c",
+  "orientation": "any",
+  "theme_color": "#05080d",
+  "background_color": "#05080d",
   "icons": [
     {
-      "src": "./icon.svg",
+      "src": "./ric-space-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
