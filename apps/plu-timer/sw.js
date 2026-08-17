@@ -1,10 +1,9 @@
-const CACHE = "plu-timer-v4-ric-space";
+const CACHE = "plu-timer-v5-fast";
 const ASSETS = [
   "/apps/plu-timer/",
   "/apps/plu-timer/index.html",
   "/apps/plu-timer/manifest.webmanifest",
-  "/apps/plu-timer/icon.svg",
-  "/apps/plu-timer/alarm.mp3"
+  "/apps/plu-timer/icon.svg"
 ];
 
 self.addEventListener("install", event => {
