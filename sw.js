@@ -1,24 +1,6 @@
-const CACHE="vibetube-shell-v10.5";
+const CACHE="vibetube-shell-v11.0";
 const ASSETS=["./","./index.html","./style.css","./script.js","./cloud-config.js","./ride-ui-patch.css","./ride-ui-patch.js","./portrait-speedmap-fix.js","./ride-autosave.js","./manifest.webmanifest","./icon.svg"];
-
-self.addEventListener("install",e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
-});
-self.addEventListener("activate",e=>{
-  e.waitUntil(caches.keys().then(keys=>Promise.all(
-    keys.filter(k=>k.startsWith("vibetube-shell-")&&k!==CACHE).map(k=>caches.delete(k))
-  )).then(()=>self.clients.claim()));
-});
-self.addEventListener("fetch",e=>{
-  const u=new URL(e.request.url);
-  if(u.origin!==location.origin)return;
-  if(e.request.method==="GET"){
-    e.respondWith(
-      fetch(e.request,{cache:"no-store"}).then(r=>{
-        const copy=r.clone();
-        caches.open(CACHE).then(c=>c.put(e.request,copy)).catch(()=>{});
-        return r;
-      }).catch(()=>caches.match(e.request))
-    );
-  }
-});
+self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
+self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("vibetube-shell-")&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+async function update(request){const response=await fetch(request,{cache:"no-cache"});if(response&&response.ok){const cache=await caches.open(CACHE);cache.put(request,response.clone()).catch(()=>{})}return response}
+self.addEventListener("fetch",event=>{const request=event.request,url=new URL(request.url);if(request.method!=="GET"||url.origin!==location.origin)return;if(request.mode==="navigate"){event.respondWith(Promise.race([update(request),new Promise((_,reject)=>setTimeout(()=>reject(new Error("timeout")),2500))]).catch(()=>caches.match(request).then(hit=>hit||caches.match("./index.html"))));return}event.respondWith(caches.match(request).then(hit=>{const fresh=update(request).catch(()=>null);if(hit){event.waitUntil(fresh);return hit}return fresh.then(response=>response||Response.error())}))});
