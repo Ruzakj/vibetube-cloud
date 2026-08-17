@@ -1023,17 +1023,22 @@ function rSpeed(b){
    if(raw<-179)raw+=360;
    if(Math.abs(raw)>120)raw=Math.sign(raw)*120;
 
-   // low-pass filter keeps UI stable while still following the phone quickly
-   leanFiltered = leanFiltered*0.72 + raw*0.28;
+   // Dead-zone removes sensor noise while the phone is upright.
+   if(Math.abs(raw)<1.2)raw=0;
+   // Responsive low-pass: current angle must return immediately instead of behaving like peak-hold.
+   leanFiltered = leanFiltered*0.55 + raw*0.45;
+   if(raw===0&&Math.abs(leanFiltered)<0.7)leanFiltered=0;
    const v=leanFiltered;
    lastLean=v;
 
+   // Peak values remain internal for Ride History only.
    if(v<0)maxL=Math.min(maxL,v);
    if(v>0)maxR=Math.max(maxR,v);
 
+   const liveLeft=v<0?Math.abs(v):0,liveRight=v>0?Math.abs(v):0;
    $d("#leanNow").textContent=Math.round(Math.abs(v))+"°";
-   $d("#leanLeft").textContent=Math.round(Math.abs(maxL))+"°";
-   $d("#leanRight").textContent=Math.round(Math.abs(maxR))+"°";
+   $d("#leanLeft").textContent=Math.round(liveLeft)+"°";
+   $d("#leanRight").textContent=Math.round(liveRight)+"°";
 
    // Motor graphic follows actual roll, but cap visual rotation only so it remains readable.
    const visual=Math.max(-80,Math.min(80,v));
@@ -1047,7 +1052,7 @@ function rSpeed(b){
        const p=await DeviceOrientationEvent.requestPermission();
        if(p!=="granted")throw new Error("Izin sensor ditolak");
      }
-     window.addEventListener("deviceorientationabsolute",onOrientation,true);
+     // One sensor stream avoids alternating absolute/relative readings on Android.
      window.addEventListener("deviceorientation",onOrientation,true);
      sensorActive=true;
      $d("#dashStatus").textContent="Sensor kemiringan aktif";
