@@ -1,4 +1,4 @@
-const CACHE = "plu-timer-v6-modern";
+const CACHE = "plu-timer-v7-alarm";
 const ASSETS = [
   "/apps/plu-timer/",
   "/apps/plu-timer/index.html",
