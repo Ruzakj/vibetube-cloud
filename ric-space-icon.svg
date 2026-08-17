@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Ric Space">
+  <defs>
+    <linearGradient id="bg" x1="70" y1="48" x2="442" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14243a"/>
+      <stop offset=".52" stop-color="#09121e"/>
+      <stop offset="1" stop-color="#05080d"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="158" y1="133" x2="348" y2="379" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7bc7ff"/>
+      <stop offset="1" stop-color="#4f7dff"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <circle cx="386" cy="112" r="76" fill="#4f8cff" opacity=".16" filter="url(#glow)"/>
+  <path d="M139 112h155c73 0 119 40 119 104 0 45-25 79-65 95l77 89h-91l-64-76h-50v76h-81V112Zm81 70v76h68c28 0 43-13 43-38 0-24-15-38-43-38h-68Z" fill="url(#mark)"/>
+  <path d="M365 363a24 24 0 1 1 0 48 24 24 0 0 1 0-48Z" fill="#62dcff"/>
+  <rect x="18" y="18" width="476" height="476" rx="104" fill="none" stroke="#91bfff" stroke-opacity=".12" stroke-width="4"/>
+</svg>
