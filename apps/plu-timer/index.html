@@ -139,6 +139,7 @@
     let endAt = 0;
     let notificationTag = 'plu-timer-running';
     let lastNotificationSecond = -1;
+    let alarmStopTimer = null;
 
     const rowsEl = document.getElementById('rows');
     const totalTimeEl = document.getElementById('totalTime');
@@ -249,20 +250,22 @@
     }
 
     async function showAppNotification(body, options={}){
+      const title=options.title||'PLU Timer',notificationOptions={...options};
+      delete notificationOptions.title;
       try{
         if(Notification.permission !== 'granted') return;
         const reg = await navigator.serviceWorker.ready;
-        await reg.showNotification('PLU Timer', Object.assign({
+        await reg.showNotification(title, Object.assign({
           body,
           tag: notificationTag,
           renotify: true,
-          icon: '/icon.svg',
-          badge: '/icon.svg',
+          icon: '/apps/plu-timer/icon.svg',
+          badge: '/apps/plu-timer/icon.svg',
           vibrate: [500,250,500,250,900],
           silent: false
-        }, options));
+        }, notificationOptions));
       }catch(e){
-        try{ new Notification('PLU Timer', {body}); }catch(_){}
+        try{ new Notification(title, {body}); }catch(_){}
       }
     }
 
@@ -271,12 +274,16 @@
       const sec = Math.max(0, Math.ceil(remaining));
       if(!force && sec === lastNotificationSecond) return;
       lastNotificationSecond = sec;
-      await showAppNotification(`Sisa waktu: ${fmt(remaining)}`, {
+      const finish=new Date(endAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+      await showAppNotification(`Sisa ${fmt(sec)} · selesai sekitar ${finish}`, {
+        title:`PLU Timer · ${fmt(sec)}`,
         tag: notificationTag,
         renotify: false,
+        requireInteraction: true,
         vibrate: [],
         silent: true,
-        timestamp: Date.now()
+        timestamp: endAt,
+        data:{endAt}
       });
     }
 
@@ -292,21 +299,22 @@
       stopAlarm();
       try{
         suppliedAlarm.muted = false;
-        suppliedAlarm.loop = false;
+        suppliedAlarm.volume = 1;
+        suppliedAlarm.loop = true;
         suppliedAlarm.currentTime = 0;
         const p = suppliedAlarm.play();
         if(p && p.catch) p.catch(()=>{});
         alarmPlaying = true;
+        clearTimeout(alarmStopTimer);
+        alarmStopTimer=setTimeout(stopAlarm,Math.max(5,alarmDuration)*1000);
+        try{if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:'Waktu PLU habis',artist:'PLU Timer',album:'Alarm aktif'});navigator.mediaSession.playbackState='playing';navigator.mediaSession.setActionHandler('stop',stopAlarm)}}catch(e){}
         stopAlarmBtn.disabled = false;
         stopAlarmBtn.textContent = '■ Stop Alarm';
-        suppliedAlarm.onended = ()=>{
-          alarmPlaying = false;
-          stopAlarmBtn.disabled = true;
-          stopAlarmBtn.textContent = '■ Stop Alarm';
-        };
+        suppliedAlarm.onended = null;
         if(navigator.vibrate) navigator.vibrate([500,250,500,250,900,250,900]);
         await closeRunningNotification();
         await showAppNotification('Waktu habis', {
+          title: 'PLU Timer · Waktu Habis',
           tag: 'plu-timer-finished',
           renotify: true,
           requireInteraction: true,
@@ -323,6 +331,8 @@
         suppliedAlarm.loop = false;
         suppliedAlarm.onended = null;
       }catch(e){}
+      clearTimeout(alarmStopTimer);alarmStopTimer=null;
+      try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='none'}catch(e){}
       alarmPlaying = false;
       stopAlarmBtn.disabled = true;
       stopAlarmBtn.textContent = '■ Stop Alarm';
