@@ -3,91 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0d9488">
+  <meta name="theme-color" content="#05080d">
   <meta name="description" content="PLU Timer PLU - timer display berdasarkan jumlah PLU">
   <title>PLU Timer</title>
   <style>
-    :root{
-      --accent:#111827; --accent-soft:#f3f4f6; --timer:#111827;
-      --bg:#f6f7f8; --text:#171a1f; --muted:#737a84; --border:#e6e8eb;
-      --warning:#f59e0b; --danger:#dc2626; --card:#fff;
-      --shadow:0 1px 5px rgba(15,23,42,.045);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.ric-back{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin-right:4px;border-radius:10px;text-decoration:none;color:inherit;background:#f3f4f6}
-    body{min-height:100vh}
-    button,input{font:inherit}
-    .topbar{height:64px;background:#ffffff;color:var(--text);display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--border)}
-    .brand{font-size:23px;font-weight:700;letter-spacing:-.3px}
-    .install{display:none;border:0;background:#fff;color:var(--text);font-weight:700;padding:10px 14px;border-radius:4px}
-    .sub{background:#fff;padding:10px 21px 15px;border-bottom:1px solid #ddd;font-size:20px;color:var(--muted)}
-    .sub b{color:#374151}
-    .notice{background:#fff9e8;color:#b05d19;text-align:center;padding:7px 10px;font-size:17px}
-    main{max-width:720px;margin:auto;padding:18px}
-    .helper{font-size:17px;color:#66717c;margin:3px 0 14px}
-    .formula{font-size:15px;color:#9aa1aa;margin-bottom:15px}
-    .formula button{border:0;background:none;color:#7a828c;text-decoration:underline;padding:0;cursor:pointer}
-    #rows{display:flex;flex-direction:column;gap:10px;width:100%;min-height:1px;visibility:visible;opacity:1}
-    .row{display:grid !important;visibility:visible !important;opacity:1 !important;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:9px 11px;grid-template-columns:92px 1fr 104px;gap:10px;align-items:center;box-shadow:var(--shadow)}
-    .row.active{border-color:#4a8fc8;box-shadow:0 0 0 1px #4a8fc8}
-    .label{font-size:17px;color:#505a65;font-weight:600}
-    .plu{width:100%;height:50px;border:1px solid #d8dde3;border-radius:8px;padding:0 12px;font-size:21px;background:#fbfcfd;outline:none}
-    .plu:focus{border-color:#9ca3af;box-shadow:0 0 0 3px rgba(17,24,39,.07);background:#fff}
-    .time{height:46px;border-radius:8px;background:var(--timer);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700}
-    .time.done{background:var(--danger)}
-    .time.empty{font-size:24px}
-    .summary{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-top:14px;box-shadow:var(--shadow)}
-    .sumline{display:flex;justify-content:space-between;align-items:center}
-    .sumline + .sumline{margin-top:10px}
-    .sumtitle{font-size:20px;font-weight:700}
-    .sumvalue{font-size:25px;font-weight:700}
-    .small{font-size:19px;color:#6d747d}
-    .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-    .btn{border:0;border-radius:13px;height:60px;font-size:21px;font-weight:700;color:#fff;cursor:pointer}
-    .pause{background:var(--warning);color:#fff}
-    .restart{background:#111827}
-    .stop-alarm{
-      width:100%;height:54px;margin-top:10px;border:1px solid #fecaca;
-      border-radius:13px;background:#fff;color:#b91c1c;font-size:18px;font-weight:700;
-      cursor:pointer;transition:.15s;
-    }
-    .stop-alarm:not(:disabled):active{transform:scale(.99);background:#fef2f2}
-    .stop-alarm:disabled{opacity:.45;cursor:not-allowed}
-    .addbar{display:flex;gap:10px;margin-top:14px}
-    .addbar button{flex:1;border:1px solid #cfd5db;background:#fff;border-radius:12px;padding:13px;font-size:18px;color:#374151}
-    .info{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-top:24px;box-shadow:var(--shadow)}
-    .info h2{font-size:22px;margin:0 0 12px}
-    .info p{font-size:18px;color:#6b7280;line-height:1.45;margin:6px 0}
-    .footer{padding:24px;text-align:center;color:#9ca3af;font-size:14px}
-    dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 70px #0003}
-    dialog::backdrop{background:#0007}
-    .dialog-body{padding:24px}
-    .dialog-body h3{margin:0 0 15px;font-size:23px}
-    .dialog-body label{display:block;color:#555;margin:13px 0 6px}
-    .dialog-body input{width:100%;height:50px;border:1px solid #ccd2d8;border-radius:8px;padding:0 12px}
-    .dialog-actions{display:flex;gap:10px;margin-top:20px}
-    .dialog-actions button{flex:1;padding:13px;border:0;border-radius:10px;font-weight:700}
-    @media(max-width:620px){
-      .topbar{padding:0 14px}.brand{font-size:22px}.sub{font-size:17px;padding-left:14px}
-      main{padding:16px 14px}.notice{font-size:15px}.helper{font-size:17px}
-      .row{grid-template-columns:76px 1fr 88px;gap:7px;padding:8px}
-      .label{font-size:15px}.plu{height:48px;font-size:20px}.time{height:44px;font-size:20px}
-      .sumtitle,.small{font-size:17px}.sumvalue{font-size:23px}.btn{height:64px;font-size:21px}
-    }
+    :root{color-scheme:dark;--bg:#05080d;--panel:#0b121d;--panel-2:#101925;--line:rgba(148,177,214,.14);--text:#edf5ff;--muted:#788ba3;--accent:#66a6ff;--accent-2:#59dbff;--warning:#ffb84d;--danger:#ff6975;--safe:#55d7aa;--shadow:0 18px 55px rgba(0,0,0,.28);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}body{min-height:100dvh;background:radial-gradient(circle at 88% 0,rgba(56,105,210,.13),transparent 29%),var(--bg);overflow-x:hidden}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+    .topbar{height:70px;padding:max(12px,env(safe-area-inset-top)) 18px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(5,8,13,.86);backdrop-filter:blur(18px)}
+    .brand{display:flex;align-items:center;gap:10px;font-size:1rem;font-weight:800;letter-spacing:-.025em}.brand::after{content:"WORKFLOW";padding:5px 7px;border:1px solid rgba(102,166,255,.18);border-radius:999px;background:rgba(45,92,160,.14);color:#7fb7ff;font-size:.48rem;letter-spacing:.13em}.ric-back{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--text);background:rgba(18,29,44,.8);font-size:1.45rem}.install{display:none;border:1px solid rgba(102,166,255,.22);background:rgba(31,76,142,.2);color:#9dcbff;font-weight:750;padding:10px 13px;border-radius:11px;font-size:.67rem}
+    .sub{max-width:760px;margin:0 auto;padding:20px 20px 3px;color:var(--muted);font-size:.65rem;letter-spacing:.14em}.sub b{color:#7690ae}.sub span{display:block;margin-top:6px;color:var(--text);font-size:1.55rem;font-weight:800;letter-spacing:-.04em}.notice{max-width:720px;margin:12px auto 0;padding:9px 12px;border:1px solid rgba(255,184,77,.12);border-radius:11px;background:rgba(121,74,12,.12);color:#c99b59;text-align:center;font-size:.65rem;font-weight:700}
+    main{width:min(720px,100%);margin:auto;padding:17px 18px max(30px,env(safe-area-inset-bottom))}.helper{margin:2px 1px 4px;color:var(--text);font-size:.78rem;font-weight:750}.formula{margin:0 1px 14px;color:var(--muted);font-size:.62rem}.formula button{border:0;background:none;color:#78b4ff;text-decoration:none;padding:4px;cursor:pointer;font-weight:750}
+    #rows{display:flex;flex-direction:column;gap:8px;width:100%;min-height:1px;visibility:visible;opacity:1}.row{display:grid!important;visibility:visible!important;opacity:1!important;grid-template-columns:76px minmax(0,1fr) 92px;gap:9px;align-items:center;padding:9px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(15,24,37,.94),rgba(10,17,27,.94));box-shadow:0 8px 25px rgba(0,0,0,.13);transition:border-color .15s,transform .15s}.row:focus-within{border-color:rgba(102,166,255,.42);transform:translateY(-1px)}.row.active{border-color:rgba(89,219,255,.5);box-shadow:0 0 0 1px rgba(89,219,255,.12)}
+    .label{padding-left:4px;color:#899ab0;font-size:.66rem;font-weight:750}.plu{width:100%;height:48px;border:1px solid rgba(146,177,215,.16);border-radius:11px;padding:0 12px;background:#070d15;color:var(--text);font-size:1.1rem;font-weight:750;outline:0;font-variant-numeric:tabular-nums}.plu::placeholder{color:#405169}.plu:focus{border-color:rgba(102,166,255,.54);box-shadow:0 0 0 3px rgba(83,144,231,.1)}.time{height:42px;border:1px solid rgba(89,219,255,.1);border-radius:10px;display:grid;place-items:center;background:rgba(28,81,139,.18);color:#9bdcff;font-size:.86rem;font-weight:850;font-variant-numeric:tabular-nums}.time.done{border-color:rgba(255,105,117,.25);background:rgba(139,28,39,.22);color:#ff8790}.time.empty{color:#53677f;font-size:.9rem}
+    .addbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.addbar button{min-height:42px;border:1px solid var(--line);border-radius:11px;background:rgba(17,28,43,.74);color:#a7b7ca;font-size:.65rem;font-weight:750}
+    .summary{position:relative;overflow:hidden;margin-top:14px;padding:19px;border:1px solid rgba(102,166,255,.2);border-radius:18px;background:linear-gradient(145deg,rgba(35,83,153,.24),rgba(12,21,34,.96) 62%);box-shadow:var(--shadow)}.summary::after{content:"";position:absolute;width:150px;height:150px;right:-60px;top:-75px;border-radius:50%;background:rgba(89,219,255,.08);filter:blur(6px)}.sumline{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end}.sumline+.sumline{margin-top:12px;padding-top:11px;border-top:1px solid rgba(149,183,224,.1)}.sumtitle{color:#9fb0c4;font-size:.64rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.sumvalue{font-size:2.2rem;line-height:.9;font-weight:900;letter-spacing:-.055em;font-variant-numeric:tabular-nums}.small{color:#7f91a8;font-size:.65rem;font-weight:700}
+    .controls{display:grid;grid-template-columns:1.35fr 1fr;gap:9px;margin-top:11px}.btn{height:56px;border:0;border-radius:13px;color:#fff;font-size:.76rem;font-weight:850;letter-spacing:.01em}.pause{background:linear-gradient(135deg,#367ce4,#4d9bff);box-shadow:0 10px 28px rgba(40,107,205,.24)}.restart{border:1px solid var(--line);background:#111b29;color:#bac9da}.stop-alarm{width:100%;height:48px;margin-top:9px;border:1px solid rgba(255,105,117,.18);border-radius:12px;background:rgba(111,25,34,.16);color:#ff7d87;font-size:.67rem;font-weight:800}.stop-alarm:not(:disabled):active,.btn:active,.addbar button:active{transform:scale(.985)}.stop-alarm:disabled{opacity:.36;cursor:not-allowed}
+    .info{margin-top:18px;padding:17px;border:1px solid var(--line);border-radius:15px;background:var(--panel)}.info h2{margin:0 0 9px;font-size:.85rem}.info p{margin:5px 0;color:var(--muted);font-size:.67rem;line-height:1.55}.footer{padding:24px;text-align:center;color:#506177;font-size:.58rem}
+    dialog{padding:0;width:min(520px,calc(100% - 28px));border:1px solid rgba(151,181,220,.18);border-radius:20px;background:#0b121d;color:var(--text);box-shadow:0 30px 90px rgba(0,0,0,.58)}dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}.dialog-body{padding:20px}.dialog-body h3{margin:0 0 16px;font-size:1.05rem}.dialog-body label{display:block;margin:12px 0 6px;color:#8293a9;font-size:.65rem;font-weight:700}.dialog-body input{width:100%;height:46px;padding:0 12px;border:1px solid var(--line);border-radius:11px;background:#070d15;color:var(--text)}.dialog-actions{display:flex;gap:8px;margin-top:18px}.dialog-actions button{flex:1;min-height:44px;border:1px solid var(--line);border-radius:11px;background:#121d2b;color:var(--text);font-size:.7rem;font-weight:750}
+    @media(max-width:520px){.topbar{height:64px;padding-left:12px;padding-right:12px}.brand::after{display:none}.sub{padding:17px 14px 2px}.sub span{font-size:1.35rem}.notice{margin:10px 14px 0}main{padding:14px 12px max(24px,env(safe-area-inset-bottom))}.row{grid-template-columns:62px minmax(0,1fr) 78px;gap:7px;padding:8px}.label{font-size:.59rem}.plu{height:46px;padding:0 9px;font-size:1rem}.time{height:40px;font-size:.76rem}.sumvalue{font-size:1.95rem}.controls{grid-template-columns:1.2fr 1fr}.btn{height:54px}.summary{border-radius:16px}}
+    @media(display-mode:standalone) and (orientation:landscape) and (max-height:600px){.topbar{height:54px;padding-top:8px}.sub{display:none}.notice{position:fixed;right:12px;top:58px;z-index:10;margin:0;width:auto}main{max-width:none;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.75fr);gap:10px}.helper,.formula{display:none}#rows{grid-row:1/5}.summary,.controls,.stop-alarm,.addbar{margin-top:0}.row{min-height:48px}.footer{display:none}}
   </style>
   <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#05080d">
 </head>
 <body>
   <header class="topbar">
     <div class="brand"><a href="/?view=ric-space" class="ric-back" aria-label="Kembali ke Ric Space">‹</a> PLU Timer</div>
     <button id="installBtn" class="install">Pasang Aplikasi</button>
   </header>
-  <div class="sub"><b>10 PLU = 1 menit</b></div>
-  <div class="notice">🔊 Aktifkan volume</div>
+  <div class="sub"><b>PLU COUNTDOWN SYSTEM</b><span>Timer kerja lebih terukur.</span></div>
+  <div class="notice">● Pastikan volume alarm aktif</div>
 
   <main>
-    <div class="helper">Masukkan PLU.</div>
+    <div class="helper">Daftar pekerjaan</div>
     <div class="formula">10 PLU = 1 menit <button id="formulaBtn">(ubah)</button></div>
 
     <section id="rows">
@@ -124,13 +72,13 @@
     </section>
 
     <div class="addbar">
-      <button id="addBtn">＋ Baris</button>
-      <button id="sortBtn">↕ Urutkan</button>
+      <button id="addBtn">＋ Tambah Baris</button>
+      <button id="sortBtn">↕ Urutkan PLU</button>
     </div>
 
     <section class="summary">
       <div class="sumline">
-        <div class="sumtitle">Sisa Waktu</div>
+        <div class="sumtitle">Total Sisa Waktu</div>
         <div id="totalTime" class="sumvalue">0:00</div>
       </div>
       <div class="sumline">
@@ -140,8 +88,8 @@
     </section>
 
     <div class="controls">
-      <button id="pauseBtn" class="btn pause">Mulai</button>
-      <button id="restartBtn" class="btn restart">Mulai Ulang</button>
+      <button id="pauseBtn" class="btn pause">▶ Mulai Timer</button>
+      <button id="restartBtn" class="btn restart">↻ Mulai Ulang</button>
     </div>
     <button id="stopAlarmBtn" class="stop-alarm" disabled>■ Stop Alarm</button>
 </main>
@@ -413,7 +361,7 @@
       // immediately when JS gets CPU time again.
       endAt = Date.now() + Math.ceil(remaining*1000);
       running=true; lastTenBeeped=-1; lastNotificationSecond=-1;
-      pauseBtn.textContent='Pause'; lastTick=performance.now();
+      pauseBtn.textContent='❚❚ Jeda'; lastTick=performance.now();
       unlockSuppliedAlarm(); acquireWakeLock();
       clearInterval(timer);
       updateRunningNotification(true);
@@ -432,7 +380,7 @@
         }
         if(remaining<=0){
           remaining=0; running=false; clearInterval(timer); releaseWakeLock();
-          pauseBtn.textContent='Mulai';
+          pauseBtn.textContent='▶ Mulai Timer';
           beep();
         }
         totalTimeEl.textContent=fmt(remaining);
@@ -441,13 +389,13 @@
     }
     function pause(){
       remaining = Math.max(0, (endAt ? (endAt-Date.now())/1000 : remaining));
-      running=false; clearInterval(timer); releaseWakeLock(); pauseBtn.textContent='Mulai';
+      running=false; clearInterval(timer); releaseWakeLock(); pauseBtn.textContent='▶ Mulai Timer';
       safeSet('lastRemaining', String(remaining));
       closeRunningNotification();
     }
     function restart(){
       running=false; clearInterval(timer); releaseWakeLock();
-      remaining=initialSeconds(); endAt=0; lastTenBeeped=-1; stopAlarm(); pauseBtn.textContent='Mulai';
+      remaining=initialSeconds(); endAt=0; lastTenBeeped=-1; stopAlarm(); pauseBtn.textContent='▶ Mulai Timer';
       closeRunningNotification();
       render();
     }
@@ -482,7 +430,7 @@ window.addEventListener('visibilitychange',()=>{
         totalTimeEl.textContent=fmt(remaining);
         if(remaining<=0){
           running=false; clearInterval(timer); releaseWakeLock();
-          pauseBtn.textContent='Mulai'; beep();
+          pauseBtn.textContent='▶ Mulai Timer'; beep();
         }else{
           if(document.visibilityState==='visible') acquireWakeLock();
           updateRunningNotification(true);
