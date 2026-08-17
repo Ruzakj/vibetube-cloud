@@ -802,7 +802,18 @@ function rSpeed(b){
    else if(bestD<180)speakStep(false);
  }
 
- function initMap(){
+ let mapboxLoader=null;
+ function loadMapbox(){
+   if(window.mapboxgl)return Promise.resolve();
+   if(mapboxLoader)return mapboxLoader;
+   mapboxLoader=new Promise((resolve,reject)=>{
+     if(!document.querySelector("link[data-mapbox]")){const css=document.createElement("link");css.rel="stylesheet";css.href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css";css.dataset.mapbox="1";document.head.appendChild(css)}
+     const js=document.createElement("script");js.src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js";js.async=true;js.onload=resolve;js.onerror=()=>reject(new Error("Mapbox GL gagal dimuat"));document.head.appendChild(js);
+   });
+   return mapboxLoader;
+ }
+ async function initMap(){
+   try{await loadMapbox()}catch(e){$d("#dashStatus").textContent=e.message;return}
    if(!window.mapboxgl){$d("#dashStatus").textContent="Mapbox GL gagal dimuat";return;}
    mapboxgl.accessToken="pk.eyJ1IjoicmljaGkxMTMiLCJhIjoiY21zdjY0bXU5MTM5bzJ5b29lYWY2ZGhvYyJ9.BKOQGTMqs87wgBOSc_3U3w";
    map=new mapboxgl.Map({
