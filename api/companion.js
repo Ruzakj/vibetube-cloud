@@ -48,7 +48,9 @@ export default async function handler(req, res) {
     return sendJson(res, 503, { error: "Konfigurasi AI Angel belum lengkap." });
   }
 
-  const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+  // Use a current production model that is optimized for low-latency conversation.
+  // Do not inherit a stale GROQ_MODEL value that can point at a retired/unavailable model.
+  const model = "llama-3.1-8b-instant";
   const body = {
     model,
     temperature: 0.78,
@@ -70,7 +72,6 @@ export default async function handler(req, res) {
 
       if (!upstream.ok) {
         lastStatus = upstream.status;
-        // Try the next key only for quota/auth/rate-limit failures.
         if ([401, 403, 429].includes(upstream.status)) continue;
         const detail = (await upstream.text()).slice(0, 300);
         console.error("Groq companion failed", upstream.status, detail);
