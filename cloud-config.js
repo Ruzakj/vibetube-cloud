@@ -11,3 +11,13 @@ if (location.pathname.endsWith('/ric-companion.html') || location.pathname.endsW
   script.async = false;
   document.head.appendChild(script);
 }
+
+// Speedometer native fullscreen bridge. The bridge is a no-op on PWA/browser.
+// In the Android shell it lets the fullscreen control request true landscape
+// orientation + immersive system UI instead of relying on WebView orientation lock.
+{
+  const script = document.createElement('script');
+  script.src = './speedmap-native-fullscreen.js?v=1.0.0';
+  script.async = false;
+  document.head.appendChild(script);
+}
