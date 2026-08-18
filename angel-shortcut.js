@@ -41,8 +41,6 @@
         return;
       }
     } catch (_) {}
-    // Web/PWA fallback: open the Angel companion. The native APK bridge performs
-    // the real call screen; the browser cannot start the Android call activity.
     window.location.assign('/ric-companion.html?call=1&source=floating');
   }
 
@@ -69,12 +67,10 @@
 
     let timer = null;
     let longPressed = false;
-
     const cancel = () => {
       if (timer !== null) window.clearTimeout(timer);
       timer = null;
     };
-
     const down = (event) => {
       if (event.pointerType === 'mouse' && event.button !== 0) return;
       cancel();
@@ -85,19 +81,14 @@
         openAngelChat();
       }, LONG_PRESS_MS);
     };
-
     const up = (event) => {
       cancel();
-      // A normal tap is deliberately untouched so script.js can open Ric Space.
-      // After a long press navigation has already started, so suppress the
-      // synthetic click that Android may dispatch after pointerup.
       if (longPressed) {
         event.preventDefault();
         event.stopImmediatePropagation();
         longPressed = false;
       }
     };
-
     ric.addEventListener('pointerdown', down, { passive: true });
     ric.addEventListener('pointerup', up, { capture: true });
     ric.addEventListener('pointercancel', cancel, { passive: true });
@@ -112,10 +103,21 @@
     }, true);
   }
 
+  function loadRideHistoryFix() {
+    if (window.__ricRideHistoryFixLoaded || document.querySelector('script[data-ric-ride-history-fix]')) return;
+    const script = document.createElement('script');
+    script.src = './ride-history-fix.js?v=1.0.1';
+    script.async = true;
+    script.dataset.ricRideHistoryFix = '1';
+    script.onload = () => { window.__ricRideHistoryFixLoaded = true; };
+    document.head.appendChild(script);
+  }
+
   function init() {
     injectStyle();
     addSingleFloatingCall();
     bindLongPressRic();
+    loadRideHistoryFix();
   }
 
   if (document.readyState === 'loading') {
