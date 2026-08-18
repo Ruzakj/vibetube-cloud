@@ -3,6 +3,7 @@
 
   const FLOAT_ID = 'angelFloatingButton';
   const STYLE_ID = 'angel-shortcut-style';
+  const LONG_PRESS_MS = 600;
 
   function injectStyle() {
     if (document.getElementById(STYLE_ID)) return;
@@ -18,17 +19,19 @@
         box-shadow:0 12px 30px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.03);
         backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
         transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+        touch-action:manipulation;
       }
       .angel-floating:hover{transform:translateY(-2px);background:#202027;box-shadow:0 16px 34px rgba(0,0,0,.44)}
       .angel-floating:active{transform:scale(.94)}
       .angel-floating-icon{font-size:20px;line-height:1}
+      .ric-launcher{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
       @media(max-width:420px){.angel-floating{right:12px;width:50px;height:50px}}
     `;
     document.head.appendChild(style);
   }
 
   function openAngelChat() {
-    window.location.href = '/ric-companion.html';
+    window.location.assign('/ric-companion.html?source=ric-longpress');
   }
 
   function startCall() {
@@ -38,12 +41,16 @@
         return;
       }
     } catch (_) {}
-    window.location.href = '/ric-companion.html?call=1';
+    // Web/PWA fallback: open the Angel companion. The native APK bridge performs
+    // the real call screen; the browser cannot start the Android call activity.
+    window.location.assign('/ric-companion.html?call=1&source=floating');
   }
 
   function addSingleFloatingCall() {
     const old = document.getElementById(FLOAT_ID);
     if (old) old.remove();
+    const oldNative = document.getElementById('ric-angel-shortcut');
+    if (oldNative) oldNative.remove();
     const button = document.createElement('button');
     button.id = FLOAT_ID;
     button.className = 'angel-floating';
@@ -62,38 +69,46 @@
 
     let timer = null;
     let longPressed = false;
-    let suppressClick = false;
 
-    const clear = () => {
-      if (timer) clearTimeout(timer);
+    const cancel = () => {
+      if (timer !== null) window.clearTimeout(timer);
       timer = null;
     };
 
-    const down = () => {
+    const down = (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      cancel();
       longPressed = false;
-      suppressClick = false;
-      clear();
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
+        timer = null;
         longPressed = true;
-        suppressClick = true;
         openAngelChat();
-      }, 650);
+      }, LONG_PRESS_MS);
     };
 
-    const up = () => clear();
-
-    ric.addEventListener('pointerdown', down, { passive: true });
-    ric.addEventListener('pointerup', up, { passive: true });
-    ric.addEventListener('pointercancel', up, { passive: true });
-    ric.addEventListener('contextmenu', e => e.preventDefault());
-    ric.addEventListener('click', e => {
-      if (suppressClick || longPressed) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        suppressClick = false;
+    const up = (event) => {
+      cancel();
+      // A normal tap is deliberately untouched so script.js can open Ric Space.
+      // After a long press navigation has already started, so suppress the
+      // synthetic click that Android may dispatch after pointerup.
+      if (longPressed) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
         longPressed = false;
       }
-      // Normal tap is intentionally untouched: script.js opens Ric Space.
+    };
+
+    ric.addEventListener('pointerdown', down, { passive: true });
+    ric.addEventListener('pointerup', up, { capture: true });
+    ric.addEventListener('pointercancel', cancel, { passive: true });
+    ric.addEventListener('pointerleave', cancel, { passive: true });
+    ric.addEventListener('contextmenu', event => event.preventDefault());
+    ric.addEventListener('click', event => {
+      if (longPressed) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        longPressed = false;
+      }
     }, true);
   }
 
