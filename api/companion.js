@@ -48,9 +48,9 @@ export default async function handler(req, res) {
     return sendJson(res, 503, { error: "Konfigurasi AI Angel belum lengkap." });
   }
 
-  // Use a current production model that is optimized for low-latency conversation.
-  // Do not inherit a stale GROQ_MODEL value that can point at a retired/unavailable model.
-  const model = "llama-3.1-8b-instant";
+  // Groq retired the older Llama production IDs on 2026-08-16.
+  // GPT-OSS 20B is the documented replacement for Llama 3.1 8B Instant.
+  const model = "openai/gpt-oss-20b";
   const body = {
     model,
     temperature: 0.78,
