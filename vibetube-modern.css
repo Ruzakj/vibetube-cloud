@@ -1,109 +1,144 @@
-/* VibeTube Music — modern minimal system */
+/* VibeTube Music — clean editorial minimal system v2 */
 :root{
-  --vt-bg:#09090c;
-  --vt-surface:#111116;
-  --vt-surface-2:#15151b;
+  --vt-bg:#08090b;
+  --vt-surface:#101216;
+  --vt-surface-2:#14171c;
   --vt-border:rgba(255,255,255,.075);
-  --vt-border-strong:rgba(255,255,255,.11);
-  --vt-text:#f5f5f7;
-  --vt-muted:#8b8b96;
-  --vt-soft:#b7b7c0;
+  --vt-border-strong:rgba(255,255,255,.12);
+  --vt-text:#f7f7f5;
+  --vt-muted:#858993;
+  --vt-soft:#b9bcc4;
+  --vt-radius:22px;
 }
+
 html,body{background:var(--vt-bg);color:var(--vt-text)}
-body{letter-spacing:-.01em}
+body{letter-spacing:-.015em}
+
+/* Header — quieter, editorial */
 .topbar{
-  height:78px;padding:0 18px;
-  background:rgba(9,9,12,.88);
+  height:82px;padding:0 20px;
+  background:rgba(8,9,11,.78);
   border-bottom:1px solid var(--vt-border);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
 }
-.brand span{font-size:23px;letter-spacing:-.04em}
-.brand small{font-size:9px;letter-spacing:.08em;color:#777782}
+.brand{gap:2px}
+.brand span{font-size:25px;font-weight:750;letter-spacing:-.055em}
+.brand small{font-size:8px;letter-spacing:.14em;color:#6f737c}
+.ric-launcher{padding:0;background:transparent;border:0;color:inherit}
 .icon-btn{
-  width:48px;height:48px;padding:0;border:1px solid var(--vt-border);
-  border-radius:16px;background:rgba(255,255,255,.045);color:#d9d9df;
-  display:grid;place-items:center;font-size:20px
+  width:46px;height:46px;padding:0;border:1px solid var(--vt-border);
+  border-radius:50%;background:rgba(255,255,255,.035);color:#d9dce2;
+  display:grid;place-items:center;font-size:18px;transition:.18s ease
 }
-.view{padding:24px 16px}
-.hero{padding:30px 2px 22px}
-.hero .eyebrow,.page-head .eyebrow{letter-spacing:.18em;font-size:10px}
-.hero h1,.page-head h1{font-size:36px;line-height:1.04;letter-spacing:-.055em;margin:10px 0 13px}
-.hero .muted{max-width:620px;font-size:16px;line-height:1.55;color:#898993}
-.search{gap:9px;margin:13px 0 22px}
+.icon-btn:active{transform:scale(.95);background:rgba(255,255,255,.07)}
+
+.view{padding:28px 18px}
+.hero{padding:42px 2px 30px}
+.hero .eyebrow,.page-head .eyebrow{letter-spacing:.22em;font-size:9px;font-weight:700;color:#70747d}
+.hero h1,.page-head h1{
+  font-size:clamp(38px,10vw,52px);line-height:.98;letter-spacing:-.07em;
+  margin:13px 0 17px;font-weight:760
+}
+.hero .muted{max-width:560px;font-size:15px;line-height:1.55;color:var(--vt-muted)}
+
+/* Search — single soft surface instead of a heavy form */
+.search{
+  gap:8px;margin:4px 0 25px;padding:6px;
+  background:var(--vt-surface);border:1px solid var(--vt-border);
+  border-radius:20px;box-shadow:0 16px 42px rgba(0,0,0,.18)
+}
 .search input{
-  min-height:54px;background:rgba(255,255,255,.045);border:1px solid var(--vt-border-strong);
-  border-radius:17px;padding:14px 16px;font-size:15px;color:#fff
+  min-height:48px;background:transparent;border:0;border-radius:15px;
+  padding:12px 14px;font-size:14px;color:#fff;outline:none
 }
-.search input:focus{border-color:rgba(255,255,255,.18);box-shadow:0 0 0 3px rgba(255,255,255,.035)}
+.search input:focus{box-shadow:none}
 .search button,.primary{
-  min-width:88px;min-height:54px;border-radius:17px;background:#f1f1f3;color:#09090c;
-  font-size:14px;font-weight:800
+  min-width:78px;min-height:48px;border-radius:15px;background:#f4f4f2;color:#090a0c;
+  font-size:13px;font-weight:800;border:0
 }
-.chips{gap:8px;padding:0 0 19px;scrollbar-width:none}
+
+/* Categories — light, horizontal selector */
+.chips{gap:7px;padding:0 0 25px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{
-  padding:10px 15px;border-radius:999px;border:1px solid var(--vt-border-strong);
-  background:rgba(255,255,255,.025);color:#b5b5be;font-size:13px
+  padding:9px 14px;border-radius:999px;border:1px solid var(--vt-border);
+  background:transparent;color:#8f939d;font-size:12px;white-space:nowrap;
+  transition:.18s ease
 }
-.chip.active{background:#f0f0f2;color:#09090c;border-color:#f0f0f2}
-.section-head{margin:3px 0 12px}
-.section-head h2{font-size:21px;letter-spacing:-.035em;margin:0}
-.ghost{border:1px solid var(--vt-border);background:rgba(255,255,255,.045);color:#d5d5dc;border-radius:14px;padding:10px 13px;font-size:13px}
-.song-list{gap:5px}
+.chip.active{background:#f4f4f2;color:#090a0c;border-color:#f4f4f2}
+
+.section-head{margin:0 1px 11px}
+.section-head h2{font-size:20px;letter-spacing:-.045em;margin:0;font-weight:720}
+.ghost{border:1px solid var(--vt-border);background:transparent;color:#bfc2c9;border-radius:999px;padding:9px 13px;font-size:11px}
+
+/* Music list — no giant cards, subtle rows */
+.song-list{gap:2px}
 .song{
-  grid-template-columns:58px minmax(0,1fr) 30px;gap:13px;padding:9px 8px;
-  border:1px solid transparent;border-radius:17px;background:transparent
+  grid-template-columns:54px minmax(0,1fr) 28px;gap:12px;padding:9px 7px;
+  border:1px solid transparent;border-radius:18px;background:transparent;
+  transition:background .16s ease,border-color .16s ease
 }
-.song:hover,.song.current{background:rgba(255,255,255,.045);border-color:var(--vt-border)}
-.thumb{width:58px;height:58px;border-radius:13px;background:#17171d}
-.song-title{font-size:15px;font-weight:750;letter-spacing:-.02em;padding-bottom:4px}
-.song-artist{font-size:12px;color:#85858f}
-.song-action{font-size:13px;color:#cfcfd6}
+.song:hover,.song.current{background:var(--vt-surface);border-color:var(--vt-border)}
+.thumb{width:54px;height:54px;border-radius:15px;background:#15181d}
+.song-title{font-size:14px;font-weight:720;letter-spacing:-.025em;padding-bottom:4px;line-height:1.25}
+.song-artist{font-size:11px;color:#7d818b}
+.song-action{font-size:12px;color:#bfc2c8}
+
+/* Bottom navigation — floating glass rail */
 .bottom-nav{
-  height:78px;background:rgba(10,10,13,.94);border-top:1px solid var(--vt-border);
-  box-shadow:0 -12px 30px rgba(0,0,0,.14)
+  left:12px;right:12px;bottom:10px;width:auto;height:66px;
+  background:rgba(16,18,22,.88);border:1px solid var(--vt-border);
+  border-radius:23px;box-shadow:0 18px 45px rgba(0,0,0,.38);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
 }
-.nav{font-size:18px;color:#686872;gap:5px}
-.nav span{font-size:10px;letter-spacing:.01em}
-.nav.active{color:#f3f3f5}
+.nav{font-size:17px;color:#686d77;gap:4px;border-radius:17px;transition:.18s ease}
+.nav span{font-size:9px;letter-spacing:.02em}
+.nav.active{color:#f3f3f1;background:rgba(255,255,255,.055)}
+
+/* Player — compact floating control, visually separate from Angel */
 .player-dock{
-  bottom:82px;left:12px;right:12px;padding:7px 8px;
-  min-height:58px;box-sizing:border-box;
-  background:rgba(17,17,22,.92);border:1px solid var(--vt-border-strong);
-  border-radius:17px;box-shadow:0 12px 30px rgba(0,0,0,.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  display:grid;grid-template-columns:minmax(0,1fr) 34px 38px 34px;align-items:center;gap:4px
+  bottom:86px;left:14px;right:14px;padding:7px 8px;min-height:56px;
+  box-sizing:border-box;background:rgba(16,18,22,.9);border:1px solid var(--vt-border);
+  border-radius:19px;box-shadow:0 14px 38px rgba(0,0,0,.34);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  display:grid;grid-template-columns:minmax(0,1fr) 32px 36px 32px;align-items:center;gap:3px
 }
-.now-mini{font-size:12px;color:#dedee3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
-.player-btn{width:34px;height:34px;padding:0;border:0;border-radius:10px;background:transparent;color:#f3f3f5;font-size:15px;display:grid;place-items:center}
-.player-btn.play{background:rgba(255,255,255,.08);border:1px solid var(--vt-border)}
+.now-mini{font-size:11px;color:#d7d9de;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 7px}
+.player-btn{width:32px;height:32px;padding:0;border:0;border-radius:50%;background:transparent;color:#f3f3f5;font-size:13px;display:grid;place-items:center}
+.player-btn.play{background:#f1f1ef;color:#090a0c;border:0}
 .full-player{background:var(--vt-bg)}
 .close{background:rgba(255,255,255,.055);border:1px solid var(--vt-border);color:#fff}
-.visual{border-color:#15151b;box-shadow:0 24px 70px rgba(0,0,0,.5)}
-.player-meta h2{font-size:23px;letter-spacing:-.04em}
-.player-meta p{font-size:13px}
-.seekbar{accent-color:#f1f1f3}
-.mode-btn{background:rgba(255,255,255,.045);border-color:var(--vt-border);color:#aaaab4}
-.mode-btn.active{background:#f0f0f2;color:#09090c;border-color:#f0f0f2}
+.visual{border-color:#15181d;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.player-meta h2{font-size:23px;letter-spacing:-.05em}
+.player-meta p{font-size:13px;color:var(--vt-muted)}
+.seekbar{accent-color:#f1f1ef}
+.mode-btn{background:rgba(255,255,255,.04);border-color:var(--vt-border);color:#999da6;border-radius:999px}
+.mode-btn.active{background:#f0f0ee;color:#090a0c;border-color:#f0f0ee}
 
-/* One Angel launcher only: compact, independent from the music player dock. */
+/* Angel — one clean call launcher, never merged into the music dock */
 .angel-floating{
-  right:max(14px,env(safe-area-inset-right));
-  bottom:calc(88px + env(safe-area-inset-bottom));
-  width:52px;height:52px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.14);
-  background:#17171d;color:#fff;
-  box-shadow:0 12px 28px rgba(0,0,0,.38);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+  position:fixed;right:max(16px,env(safe-area-inset-right));
+  bottom:calc(160px + env(safe-area-inset-bottom));z-index:80;
+  width:50px!important;height:50px!important;min-width:50px!important;
+  padding:0!important;border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  background:#171a20!important;color:#fff!important;
+  box-shadow:0 14px 32px rgba(0,0,0,.42)!important;
+  display:grid!important;place-items:center!important;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)
 }
-.angel-floating-icon{font-size:19px}
+.angel-floating-icon{font-size:18px;line-height:1}
 .ric-angel-shortcut{display:none!important}
 
 @media(max-width:520px){
-  .hero{padding-top:24px}
-  .hero h1{font-size:34px}
-  .hero .muted{font-size:15px}
-  .player-dock{left:10px;right:10px;border-radius:16px}
+  .view{padding-left:16px;padding-right:16px}
+  .hero{padding-top:30px}
+  .hero h1{font-size:38px}
+  .hero .muted{font-size:14px}
+  .player-dock{left:12px;right:12px}
+  .angel-floating{right:14px}
 }
 @media(min-width:700px){
   main{max-width:820px}
-  .hero h1{font-size:44px}
+  .hero h1{font-size:52px}
 }
