@@ -1,0 +1,13 @@
+/* Ric Space tool grouping — v1.0 */
+.ric-space-groups{display:flex;flex-direction:column;gap:24px}
+.ric-tool-group,.ric-special-group{display:flex;flex-direction:column;gap:12px}
+.ric-tool-group-head{display:flex;align-items:end;justify-content:space-between;padding:0 4px}
+.ric-tool-group-head .eyebrow{margin:0}
+.ric-tool-group-head .muted{margin:4px 0 0;font-size:.78rem}
+.ric-special-group{padding-top:4px}
+.ric-special-card{display:flex;align-items:center;gap:14px;width:100%;text-decoration:none;text-align:left;padding:16px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);color:inherit;box-shadow:0 10px 30px rgba(0,0,0,.12);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.ric-special-card:active{transform:scale(.985)}
+.ric-special-card .ric-app-icon{flex:0 0 auto}
+.ric-special-card .ric-app-copy{flex:1;min-width:0}
+.ric-special-badge{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.55;padding:6px 9px;border:1px solid rgba(255,255,255,.10);border-radius:999px}
+@media (min-width:700px){.ric-tool-group .ric-app-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
