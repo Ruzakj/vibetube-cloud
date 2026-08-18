@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="AI companion pribadi di Ric Space">
+  <title>Ric Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#000;--line:#262626;--incoming:#262626;--text:#f5f5f5;--muted:#a8a8a8;--blue:#0095f6;--aira-avatar:none}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden;overscroll-behavior:none}body{font-family:Inter,system-ui,sans-serif;background:#000;color:var(--text);position:fixed;inset:0}button,input,textarea{font:inherit}
+    .app{position:fixed;top:var(--app-top,0px);right:0;bottom:auto;left:0;width:100%;height:var(--app-height,100dvh);max-width:760px;margin:0 auto;display:grid;grid-template-rows:calc(72px + env(safe-area-inset-top)) minmax(0,1fr) calc(71px + env(safe-area-inset-bottom));background:var(--bg);overflow:hidden}
+    header{height:calc(72px + env(safe-area-inset-top));display:flex;align-items:flex-end;gap:9px;padding:calc(9px + env(safe-area-inset-top)) 11px 9px;background:#000;border-bottom:1px solid #141414;position:relative;z-index:10}.back,.icon,.video{border:0;background:transparent;color:var(--text);height:44px;cursor:pointer;padding:8px;flex:none}.back{width:38px;font-size:36px;font-weight:300;line-height:1}.icon,.video{width:39px}.ui-icon{width:25px;height:25px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.avatar{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background-image:var(--aira-avatar),linear-gradient(135deg,#f9ce34,#ee2a7b 55%,#6228d7);background-size:cover,auto;background-position:center;background-origin:padding-box,border-box;background-clip:padding-box,border-box;border:3px solid transparent;color:transparent;font-size:0}.head{flex:1;min-width:0;align-self:center}.head h1{font-size:15px;font-weight:650;margin:0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.status{font-size:12px;color:var(--muted)}
+    main{min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:4px;padding:14px 12px 18px;scrollbar-width:none}.empty{margin:auto;text-align:center;max-width:300px;padding:18px}.empty h2{font-size:16px;margin:0 0 8px}.empty p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}.orb{display:none}.date-separator{align-self:center;color:#a8a8a8;font-size:11px;margin:15px 0 11px;text-transform:uppercase}
+    .message-row{width:100%;display:flex;align-items:flex-end;gap:8px}.message-row.user{justify-content:flex-end}.message-row.assistant{justify-content:flex-start}.message-row.call{justify-content:center;margin:9px 0}.msg-avatar{width:30px;height:30px;flex:none;border-radius:50%;display:block;background-image:var(--aira-avatar);background-size:cover;background-position:center;border:1px solid #303030;color:transparent;font-size:0}.msg{position:relative;max-width:76%;padding:10px 14px;border-radius:23px;font-size:14px;line-height:1.42;white-space:pre-wrap;margin:1px 0}.message-row.user .msg{background:#6c43ff;color:#fff}.message-row.assistant .msg{background:#262626}.call-card{display:flex;align-items:center;gap:9px;min-width:176px;max-width:76%;padding:10px 13px;border:1px solid #323232;border-radius:14px;background:#171717}.call-glyph{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#294b37;color:#72d68f;font-size:15px}.call-card.missed .call-glyph,.call-card.declined .call-glyph{background:#512b31;color:#ff7d87}.call-copy b,.call-copy span{display:block}.call-copy b{font-size:12px;font-weight:650}.call-copy span{font-size:10px;color:var(--muted);margin-top:2px}.meta,.ticks{display:none}.typing{color:var(--muted);letter-spacing:3px;padding-left:16px}.seen{align-self:flex-end;color:var(--muted);font-size:10px;margin:-1px 5px 5px}
+    .msg.has-image{width:min(72%,300px);max-width:300px;padding:0;overflow:hidden;border-radius:18px}.message-photo{display:block;width:100%;height:auto;max-height:390px;object-fit:cover;background:#171717}.msg.has-image>span{display:block;padding:9px 12px 11px;white-space:pre-wrap}.voice-note{width:min(250px,76vw);min-height:62px;display:flex;align-items:center;gap:10px;padding:9px 12px;background:#262626;border-radius:18px}.voice-play{width:37px;height:37px;border:0;border-radius:50%;background:#6c43ff;color:#fff;font-size:15px;display:grid;place-items:center;flex:none}.voice-copy{min-width:0;flex:1}.voice-bars{height:20px;display:flex;align-items:center;gap:3px}.voice-bars i{display:block;width:3px;border-radius:6px;background:#b9a9ff}.voice-bars i:nth-child(1),.voice-bars i:nth-child(7){height:6px}.voice-bars i:nth-child(2),.voice-bars i:nth-child(6){height:12px}.voice-bars i:nth-child(3),.voice-bars i:nth-child(5){height:18px}.voice-bars i:nth-child(4){height:10px}.voice-meta{display:flex;justify-content:space-between;margin-top:5px;color:#aaa;font-size:10px}.voice-note.playing .voice-bars i{background:#8c74ff;animation:pulse .7s ease-in-out infinite alternate}.voice-note.playing .voice-bars i:nth-child(2n){animation-delay:.2s}@keyframes pulse{to{transform:scaleY(1.45)}}
+    form{min-width:0;height:calc(71px + env(safe-area-inset-bottom));display:flex;align-items:flex-start;padding:8px 10px calc(11px + env(safe-area-inset-bottom));background:#000;position:relative;z-index:10}.composer-wrap{display:flex;align-items:center;flex:1;min-width:0;min-height:52px;background:#262626;border-radius:28px;padding:4px 7px 4px 5px;overflow:hidden}.camera{width:42px;height:42px;flex:none;border:0;border-radius:50%;display:grid;place-items:center;color:#fff;background:#6347ff;padding:9px}.camera .ui-icon{width:25px;height:25px}.composer{flex:1;min-width:0;min-height:43px;max-height:104px;resize:none;border:0;background:transparent;color:var(--text);padding:12px 8px 9px;outline:none;line-height:20px}.composer::placeholder{color:#a8a8a8}.attach{border:0;background:transparent;color:#fff;padding:8px 7px;flex:none}.attach .ui-icon{width:24px;height:24px}.send{display:none;height:42px;min-width:50px;padding:0 9px;border:0;border-radius:22px;background:transparent;color:#8067ff;font-size:14px;font-weight:750;cursor:pointer;flex:none}.has-text .attach{display:none}.has-text .send{display:block}.send:disabled{opacity:.45}
+    @media(max-width:390px){.video:first-of-type{display:none}.icon,.video{width:34px;padding:6px}.attach{padding:8px 5px}.attach .ui-icon{width:22px;height:22px}.head h1{max-width:110px}}
+    .settings{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;z-index:20}.settings.open{display:flex}.sheet{width:min(760px,100%);max-height:92dvh;overflow:auto;background:#171717;border:1px solid var(--line);border-radius:18px 18px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom))}.sheet h2{margin:0 0 16px;font-size:18px}.field{display:block;margin:13px 0;color:var(--muted);font-size:12px}.field input{display:block;width:100%;margin-top:7px;border:1px solid #363636;background:#000;color:#fff;border-radius:10px;padding:12px}.switch-field{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:16px 0;padding:12px 0;border-top:1px solid #292929;border-bottom:1px solid #292929}.switch-copy b,.switch-copy span{display:block}.switch-copy b{font-size:14px}.switch-copy span{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}.switch-field input{width:21px;height:21px;accent-color:#7c5cff}.memory-status{font-size:11px;color:var(--muted);margin:-5px 0 12px}.backup-box{margin:18px 0 8px;padding:14px;border:1px solid #303030;border-radius:14px;background:#111}.backup-box h3{font-size:14px;margin:0 0 5px}.backup-box p{font-size:11px;line-height:1.45;color:var(--muted);margin:0 0 10px}.backup-actions{display:flex;gap:8px}.backup-actions button{flex:1;border:0;border-radius:10px;padding:11px 8px;background:#6848ff;color:#fff;font-weight:650}.backup-actions button+button{background:#292929}.backup-actions button:disabled{opacity:.55}.backup-status{font-size:11px;min-height:16px;color:var(--muted);margin:9px 0 0}.row{display:flex;gap:9px;margin-top:10px}.row button{flex:1;border:0;border-radius:12px;padding:12px;background:#262626;color:#fff}.danger{color:#ed4956!important}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <button class="back" id="back" aria-label="Kembali">‹</button><div class="avatar" id="avatar">A</div>
+      <div class="head"><h1 id="title">Angel</h1><div class="status" id="provider">Active now</div></div>
+      <button class="video" type="button" aria-label="Panggilan"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></button><button class="video" type="button" aria-label="Panggilan video"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="3"/><path d="m17 10 5-3v10l-5-3z"/></svg></button>
+      <button class="icon" id="settings" aria-label="Info"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></button>
+    </header>
+    <main id="chat"><div class="empty" id="empty"><div class="orb"></div><h2>Ada yang mau diceritain?</h2><p>Pilih karakter yang paling nyaman. Percakapan tersimpan hanya di perangkat ini.</p></div></main>
+    <form id="form">
+      <div class="composer-wrap">
+        <button class="camera" type="button" aria-label="Kamera"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M14.5 5 13 3h-2L9.5 5H6a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3z"/><circle cx="12" cy="12.5" r="4"/></svg></button>
+        <textarea class="composer" id="input" rows="1" maxlength="4000" placeholder="Kirim pesan..."></textarea>
+        <button class="attach" type="button" aria-label="Mikrofon"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M9 22h6"/></svg></button>
+        <button class="attach" type="button" aria-label="Galeri"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m4 17 5-5 4 4 2-2 5 5"/></svg></button>
+        <button class="attach" type="button" aria-label="Stiker"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-8-8h8z"/><path d="M20 12h-5a3 3 0 0 0-3 3v5M8 10h.01M15 10h.01M8.5 14.5a5 5 0 0 0 5 0"/></svg></button>
+        <button class="attach" type="button" aria-label="Lainnya"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></button>
+      </div>
+      <button class="send" id="send" type="submit" aria-label="Kirim">Kirim</button>
+    </form>
+  </div>
+  <div class="settings" id="panel">
+    <section class="sheet">
+      <h2>Atur companion</h2>
+      <label class="field">Nama panggilan<input id="userName" maxlength="30" placeholder="Ric"></label>
+      <label class="field">Nama companion<input id="botName" maxlength="30" placeholder="Angel"></label>
+      <label class="switch-field"><span class="switch-copy"><b>Chat duluan</b><span>Cariin Ric setelah beberapa jam tidak ngobrol dan tampilkan notifikasi jika Android mengizinkan.</span></span><input id="proactiveToggle" type="checkbox"></label>
+      <p class="memory-status" id="memoryStatus">Ingatan belum terbentuk.</p>
+      <section class="backup-box" aria-label="Backup cloud manual">
+        <h3>Backup cloud manual</h3>
+        <p>Seperti backup WhatsApp: chat & ingatan tetap lokal sampai kamu pilih backup. Buat kode rahasia yang sama di perangkat tujuan untuk pulihkan. Arsip di cloud terenkripsi.</p>
+        <label class="field">Kode backup rahasia<input id="backupCode" type="password" minlength="8" autocomplete="off" placeholder="Minimal 8 karakter"></label>
+        <div class="backup-actions"><button type="button" id="backupNow">Backup sekarang</button><button type="button" id="restoreNow">Pulihkan dari cloud</button></div>
+        <p class="backup-status" id="backupStatus">Belum ada backup cloud di perangkat ini.</p>
+      </section>
+      <div class="row"><button id="closePanel">Simpan</button><button id="clearMemory">Hapus ingatan</button><button class="danger" id="clearChat">Hapus chat</button></div>
+    </section>
+  </div>
+  <script src="cloud-config.js?v=6.6"></script>
+  <script src="ric-companion.js?v=5.7.0"></script>
+</body>
+</html>
