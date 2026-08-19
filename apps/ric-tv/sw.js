@@ -1,4 +1,4 @@
-const CACHE="ric-tv-shell-v7";
+const CACHE="ric-tv-shell-v8";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("ric-tv-shell-")&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
@@ -9,9 +9,13 @@ async function rewriteNavigation(request){
   const type=response.headers.get("content-type")||"";
   if(!type.includes("text/html"))return response;
   let html=await response.text();
-  const old='fetch(url,{cache:"no-store",mode:"cors"})';
-  const replacement='fetch("/api/playlist?url="+encodeURIComponent(url),{cache:"no-store"})';
-  if(html.includes(old))html=html.replace(old,replacement);
+  const replacements=[
+    ['fetch(url,{cache:"no-store",mode:"cors"})','fetch("/api/playlist?url="+encodeURIComponent(url),{cache:"no-store"})'],
+    ['String(text).slice(0,5*1024*1024)','String(text).slice(0,20*1024*1024)'],
+    ['if(out.length>=600)break',''],
+    ['custom=[...rows.filter(x=>!existing.has(x.url)),...custom].slice(0,600)','custom=[...rows.filter(x=>!existing.has(x.url)),...custom]']
+  ];
+  for(const [from,to] of replacements)if(html.includes(from))html=html.replace(from,to);
   const headers=new Headers(response.headers);headers.set("Cache-Control","no-store");
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
